@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroundvibers"
+    tools:context="com.example.mypc.a15puzzlegametechkids.MainGameActivity">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <ImageView
+        android:id="@+id/iv_title_bar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/titlebar" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/btnback" />
+
+    <ImageView
+        android:id="@+id/iv_flag"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_title_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/fiftypuzzle" />
+
+    <ImageView
+        android:id="@+id/iv_check"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pause" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/gl_top_of_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/scoreboard"
+        app:layout_constraintBottom_toTopOf="@+id/cl_main_board"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_title_bar">
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_center_horizontoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <TextView
+            android:id="@+id/tv_current_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="Current Result"
+            android:textColor="#fff700"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/gl_center_horizontoal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_best_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Best Result"
+
+            android:textColor="#fff700"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gl_center_horizontoal"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_current_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="00:00:00"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toStartOf="@+id/gl_center_horizontoal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_current_result" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="00:00:00"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gl_center_horizontoal"
+            app:layout_constraintTop_toBottomOf="@+id/tv_best_result" />
+
+        <TextView
+            android:id="@+id/tv_current_moving"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_center_horizontoal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_current_timer" />
+
+        <TextView
+            android:id="@+id/tv_best_moving"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gl_center_horizontoal"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_main_board"
+        android:layout_width="328dp"
+        android:layout_height="328dp"
+        android:background="@drawable/woodboard"
+        android:elevation="15dp"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gl_top_of_board">
+
+        <ImageView
+            android:id="@+id/iv_puzzle_1_1"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginEnd="1dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_puzzle_2_1"
+            app:layout_constraintEnd_toStartOf="@+id/iv_puzzle_1_2"
+            app:srcCompat="@drawable/aa" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_1_2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginEnd="0.5dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_puzzle_2_2"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_center"
+            app:srcCompat="@drawable/ab" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_1_3"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginStart="0.5dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_puzzle_2_3"
+            app:layout_constraintStart_toStartOf="@+id/gl_vertical_center"
+            app:srcCompat="@drawable/ac" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_1_4"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginStart="1dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_puzzle_2_4"
+            app:layout_constraintStart_toEndOf="@+id/iv_puzzle_1_3"
+            app:srcCompat="@drawable/ad" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_2_1"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="0.5dp"
+            android:layout_marginEnd="1dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_center"
+            app:layout_constraintEnd_toStartOf="@+id/iv_puzzle_2_2"
+            app:srcCompat="@drawable/ba" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_2_2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="0.5dp"
+            android:layout_marginEnd="0.5dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_center"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_center"
+            app:srcCompat="@drawable/bb" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_2_3"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="0.5dp"
+            android:layout_marginStart="0.5dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_center"
+            app:layout_constraintStart_toStartOf="@+id/gl_vertical_center"
+            app:srcCompat="@drawable/bc" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_2_4"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="0.5dp"
+            android:layout_marginStart="1dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_center"
+            app:layout_constraintStart_toEndOf="@+id/iv_puzzle_2_3"
+            app:srcCompat="@drawable/bd" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_3_1"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginTop="0.5dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/iv_puzzle_3_2"
+            app:layout_constraintTop_toTopOf="@+id/gl_horizontal_center"
+            app:srcCompat="@drawable/ca" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_3_2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="0.5dp"
+            android:layout_marginTop="0.5dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_center"
+            app:layout_constraintTop_toTopOf="@+id/gl_horizontal_center"
+            app:srcCompat="@drawable/cb" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_3_3"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="0.5dp"
+            android:layout_marginTop="0.5dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintStart_toStartOf="@+id/gl_vertical_center"
+            app:layout_constraintTop_toTopOf="@+id/gl_horizontal_center"
+            app:srcCompat="@drawable/cc" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_3_4"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="0.5dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintStart_toEndOf="@+id/iv_puzzle_3_3"
+            app:layout_constraintTop_toTopOf="@+id/gl_horizontal_center"
+            app:srcCompat="@drawable/cd" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_4_1"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/iv_puzzle_4_2"
+            app:layout_constraintTop_toBottomOf="@+id/iv_puzzle_3_1"
+            app:srcCompat="@drawable/da" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_4_2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="0.5dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_center"
+            app:layout_constraintTop_toBottomOf="@+id/iv_puzzle_3_2"
+            app:srcCompat="@drawable/db" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_4_3"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="0.5dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/border4"
+            android:elevation="16dp"
+            app:layout_constraintStart_toStartOf="@+id/gl_vertical_center"
+            app:layout_constraintTop_toBottomOf="@+id/iv_puzzle_3_3"
+            app:srcCompat="@drawable/dc" />
+
+        <ImageView
+            android:id="@+id/iv_puzzle_4_4"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@null"
+            android:elevation="16dp"
+            app:layout_constraintStart_toEndOf="@+id/iv_puzzle_4_3"
+            app:layout_constraintTop_toBottomOf="@+id/iv_puzzle_3_4"
+            app:srcCompat="@null" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_vertical_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_horizontal_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
