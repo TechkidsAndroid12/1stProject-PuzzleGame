@@ -84,13 +84,14 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_high_core"
             app:srcCompat="@drawable/options" />
     </android.support.constraint.ConstraintLayout>
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_menu_box"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
-        android:elevation="50dp"
         android:background="@drawable/darkerbackground"
+        android:elevation="50dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
