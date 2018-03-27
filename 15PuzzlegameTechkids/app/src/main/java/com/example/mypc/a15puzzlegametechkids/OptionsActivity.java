@@ -1,10 +1,14 @@
 package com.example.mypc.a15puzzlegametechkids;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.HorizontalScrollView;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import butterknife.BindView;
@@ -13,8 +17,7 @@ import butterknife.OnClick;
 
 public class OptionsActivity extends AppCompatActivity {
 
-    @BindView(R.id.horizontalScrollView)
-    HorizontalScrollView horizontalScrollView;
+
     @BindView(R.id.iv_main_image)
     ImageView ivMainImage;
     @BindView(R.id.iv_arrow_left)
@@ -23,14 +26,38 @@ public class OptionsActivity extends AppCompatActivity {
     ImageView ivArrowRight;
 
     GestureDetector gestureDetector;
-    ImageView[] ivSmallPicture = new ImageView[15];
-    private int[] idSmallPictures = {R.drawable.tnh, R.drawable.tnh, R.drawable.tnh, R.drawable.tnh, R.drawable.tnh, R.drawable.tnh, R.drawable.tnh, R.drawable.tnh, R.drawable.tnh, R.drawable.tnh, 0};
+
+    @BindView(R.id.iv_left)
+    ImageView ivLeft;
+    @BindView(R.id.iv_main)
+    ImageView ivMain;
+    @BindView(R.id.iv_right)
+    ImageView ivRight;
+    @BindView(R.id.cl_preview_picture)
+    ConstraintLayout clPreviewPicture;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.iv_check)
+    ImageView ivCheck;
+    @BindView(R.id.cl_main_view)
+    ConstraintLayout clMainView;
+
+    private int[] idPreview = {R.drawable.tnh, R.drawable.tnhone, R.drawable.tnhtwo, R.drawable.tndthree, R.drawable.tnhfour, R.drawable.tnhone, R.drawable.tnhtwo, R.drawable.tnh, R.drawable.tnhone, R.drawable.tnhtwo, 0};
+    private int currentPosition = 1;
+    private final int NEXT_TO_LEFT = -1;
+    private final int NEXT_TO_RIGHT = 1;
+    private final int NUM_PREVIEWS = 10;
+    private static final String TAG = "OptionsActivity";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_options);
+        getSupportActionBar().hide();
         ButterKnife.bind(this);
         Define();
         Initialization();
@@ -39,70 +66,134 @@ public class OptionsActivity extends AppCompatActivity {
 
     }
 
-    @OnClick({R.id.iv_main_image, R.id.iv_arrow_left, R.id.iv_arrow_right})
+    @OnClick({ R.id.iv_arrow_left, R.id.iv_arrow_right, R.id.iv_check, R.id.iv_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_main_image:
-                break;
+
             case R.id.iv_arrow_left:
-                idSmallPictures[10] = (--idSmallPictures[10] + 20) % 10;
-                ivMainImage.setImageResource(idSmallPictures[idSmallPictures[10]]);
-                for (int i = 0; i < 10; i++)
-                    ivSmallPicture[i].setBackgroundResource(R.drawable.border);
-                ivSmallPicture[idSmallPictures[10]].setBackgroundResource(R.drawable.border3);
+                changePicture(NEXT_TO_LEFT);
                 break;
             case R.id.iv_arrow_right:
-                idSmallPictures[10] = (++idSmallPictures[10] + 20) % 10;
-                ivMainImage.setImageResource(idSmallPictures[idSmallPictures[10]]);
-                for (int i = 0; i < 10; i++)
-                    ivSmallPicture[i].setBackgroundResource(R.drawable.border);
-                ivSmallPicture[idSmallPictures[10]].setBackgroundResource(R.drawable.border3);
+                changePicture(NEXT_TO_RIGHT);
+
                 break;
+            case R.id.iv_back:
+                this.finish();
+                break;
+            case R.id.iv_check:
+                this.finish();
+                break;
+
         }
     }
 
     private void Define() {
-        ivSmallPicture[0] = findViewById(R.id.iv_zero);
-        ivSmallPicture[1] = findViewById(R.id.iv_one);
-        ivSmallPicture[2] = findViewById(R.id.iv_two);
-        ivSmallPicture[3] = findViewById(R.id.iv_three);
-        ivSmallPicture[4] = findViewById(R.id.iv_four);
-        ivSmallPicture[5] = findViewById(R.id.iv_five);
-        ivSmallPicture[6] = findViewById(R.id.iv_six);
-        ivSmallPicture[7] = findViewById(R.id.iv_seven);
-        ivSmallPicture[8] = findViewById(R.id.iv_eight);
-        ivSmallPicture[9] = findViewById(R.id.iv_nine);
 
 
     }
 
     private void Initialization() {
-        for (int i = 0; i < 10; i++)
-            ivSmallPicture[i].setImageResource(idSmallPictures[i]);
-        idSmallPictures[10] = 0;
-        ivMainImage.setImageResource(idSmallPictures[idSmallPictures[10]]);
+        currentPosition = 1;
+        ivMainImage.setImageResource(idPreview[1]);
+        ivMain.setImageResource(idPreview[1]);
+        ivLeft.setImageResource(idPreview[0]);
+        ivRight.setImageResource(idPreview[2]);
 
     }
 
     private void setupUI() {
 
-        for (int position = 0; position < 10; position++)
-            setOnClickInHorizontalScoll(position);
-
-
-    }
-
-    private void setOnClickInHorizontalScoll(final int position) {
-        ivSmallPicture[position].setOnClickListener(new View.OnClickListener() {
+        gestureDetector = new GestureDetector(this, new myGestureDetector());
+        clMainView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                ivMainImage.setImageDrawable(ivSmallPicture[position].getDrawable());
-                for (int i = 0; i < 10; i++)
-                    ivSmallPicture[i].setBackgroundResource(R.drawable.border);
-                ivSmallPicture[position].setBackgroundResource(R.drawable.border3);
-                idSmallPictures[10] = position;
-
+            public boolean onTouch(View v, MotionEvent event) {
+                gestureDetector.onTouchEvent(event);
+                return true;
             }
         });
+        clPreviewPicture.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gestureDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+
+
     }
+
+    private void changePicture(final int dir) {
+
+        //  clPreviewPicture.setVisibility(View.VISIBLE);
+        currentPosition = (dir + currentPosition + NUM_PREVIEWS) % NUM_PREVIEWS;
+        ivMainImage.setImageResource(idPreview[currentPosition]);
+        ivMain.setImageResource(idPreview[currentPosition]);
+        ivLeft.setImageResource(idPreview[(NUM_PREVIEWS - 1 + currentPosition) % NUM_PREVIEWS]);
+        ivRight.setImageResource(idPreview[(NUM_PREVIEWS + 1 + currentPosition) % NUM_PREVIEWS]);
+
+
+    }
+
+
+    private class myGestureDetector implements GestureDetector.OnGestureListener {
+        final int RIGHT_QUARTER = 0;
+        final int UP_QUARTER = 1;
+        final int LEFT_QUARTER = 2;
+        final int DOWN_QUARTER = 3;
+        final int SWIP_VELOCITY = 100;
+        final int SWIP_THERSHOLD = 100;
+
+
+        @Override
+        public boolean onDown(MotionEvent motionEvent) {
+            return false;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent motionEvent) {
+            return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+            return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent motionEvent1, MotionEvent motionEvent2, float velocityX, float velocityY) {
+
+            float fromX = motionEvent1.getX();
+            float toX = motionEvent2.getX();
+
+
+            if (Math.abs(velocityX) > SWIP_VELOCITY) {
+                if (fromX - toX > SWIP_THERSHOLD) {
+                    changePicture(NEXT_TO_RIGHT);
+                    Log.d(TAG, "onFling: " + "RIGHT TO LEFT");
+                    // Toast.makeText(OptionsActivity.this, "Right to Left", Toast.LENGTH_SHORT).show();
+                }
+                if (toX - fromX > SWIP_THERSHOLD) {
+
+                    Log.d(TAG, "onFling: " + "LEFT TO RIGHT");
+                    changePicture(NEXT_TO_LEFT);
+                    //   Toast.makeText(OptionsActivity.this, "Left to Right", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+            return true;
+        }
+    }
+
+
 }
