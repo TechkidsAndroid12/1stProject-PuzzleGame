@@ -48,6 +48,7 @@ public class OptionsActivity extends AppCompatActivity {
     private final int NEXT_TO_RIGHT = 1;
     private final int NUM_PREVIEWS = 10;
     private static final String TAG = "OptionsActivity";
+    private boolean[] onTouchable = new boolean[4];
 
 
     @Override
@@ -93,6 +94,8 @@ public class OptionsActivity extends AppCompatActivity {
     }
 
     private void Initialization() {
+        for(int i = 0 ;i < 3 ;i ++)
+            onTouchable[i] = true;
         currentPosition = 1;
         ivMainImage.setImageResource(idPreview[1]);
         ivMain.setImageResource(idPreview[1]);
@@ -114,6 +117,7 @@ public class OptionsActivity extends AppCompatActivity {
         clPreviewPicture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if(!onTouchable[0] || !onTouchable[1] || !onTouchable[2]) return false;
                 gestureDetector.onTouchEvent(event);
                 return true;
             }
@@ -122,7 +126,8 @@ public class OptionsActivity extends AppCompatActivity {
 
     }
 
-    private void changePicture(final int dir) {
+    private boolean changePicture(final int dir) {
+        if(!onTouchable[0] || !onTouchable[1] || !onTouchable[2]) return false;
 
         //  clPreviewPicture.setVisibility(View.VISIBLE);
         currentPosition = (dir + currentPosition + NUM_PREVIEWS) % NUM_PREVIEWS;
@@ -131,7 +136,7 @@ public class OptionsActivity extends AppCompatActivity {
         ivLeft.setImageResource(idPreview[(NUM_PREVIEWS - 1 + currentPosition) % NUM_PREVIEWS]);
         ivRight.setImageResource(idPreview[(NUM_PREVIEWS + 1 + currentPosition) % NUM_PREVIEWS]);
 
-
+        return true;
     }
 
 

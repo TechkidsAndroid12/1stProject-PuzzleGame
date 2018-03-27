@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgroundvibers"
+    android:background="@drawable/backgroundvaibotho"
     tools:context="com.example.mypc.a15puzzlegametechkids.MainGameActivity">
 
     <android.support.constraint.Guideline
@@ -63,6 +63,7 @@
 
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_score_board"
         android:layout_width="300dp"
         android:layout_height="80dp"
         android:layout_marginTop="8dp"
@@ -105,21 +106,20 @@
             app:layout_constraintStart_toStartOf="@+id/gl_center_horizontoal"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_current_timer"
+        <Chronometer
+            android:id="@+id/cr_chromometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="00:00:00"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toStartOf="@+id/gl_center_horizontoal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_current_result" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/tv_best_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -139,7 +139,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/gl_center_horizontoal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_current_timer" />
+            app:layout_constraintTop_toBottomOf="@+id/cr_chromometer" />
 
         <TextView
             android:id="@+id/tv_best_moving"
@@ -155,7 +155,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/gl_center_horizontoal"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_best_timer" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout

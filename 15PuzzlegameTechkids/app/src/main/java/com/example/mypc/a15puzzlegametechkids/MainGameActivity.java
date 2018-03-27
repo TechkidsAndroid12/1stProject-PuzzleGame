@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,8 +25,6 @@ public class MainGameActivity extends AppCompatActivity {
 
     @BindView(R.id.iv_back)
     ImageView ivBack;
-    @BindView(R.id.tv_current_timer)
-    TextView tvCurrentTimer;
     @BindView(R.id.tv_current_moving)
     TextView tvCurrentMoving;
     @BindView(R.id.tv_best_moving)
@@ -42,13 +41,30 @@ public class MainGameActivity extends AppCompatActivity {
     ImageView ivQuit;
     @BindView(R.id.cl_menu_box)
     ConstraintLayout clMenuBox;
+    @BindView(R.id.cl_score_board)
+    ConstraintLayout clScoreBoard;
+    @BindView(R.id.iv_menu)
+    ImageView ivMenu;
+    @BindView(R.id.tv_current_result)
+    TextView tvCurrentResult;
+    @BindView(R.id.tv_best_result)
+    TextView tvBestResult;
+    @BindView(R.id.tv_best_timer)
+    TextView tvBestTimer;
+
+
+
+    Timer timer;
+
 
     private static final String TAG = "MainGameActivity";
+    Chronometer chronometer;
     private ImageView[][] ivPuzzle = new ImageView[10][10];
     private GestureDetector gestureDetector;
     private SpecialPuzzle emptyPuzzle;
     private Integer[][] puzzle = new Integer[6][6];
     private boolean[] onTouchable = new boolean[6];
+    private boolean firstMoving = false;
     private final int[] directX = {0, -1, 0, 1};
     private final int[] directY = {1, 0, -1, 0};
     private final int LEFT_TO_RIGHT = 0, DOWN_TO_UP = 1, RIGHT_TO_LEFT = 2, UP_TO_DOWN = 3;
@@ -80,29 +96,32 @@ public class MainGameActivity extends AppCompatActivity {
 
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_current_timer, R.id.tv_current_moving, R.id.tv_best_moving, R.id.cl_main_board, R.id.iv_continue, R.id.iv_newgame, R.id.iv_solve, R.id.iv_quit, R.id.cl_menu_box, R.id.iv_menu})
+    @OnClick({R.id.iv_back, R.id.tv_current_moving, R.id.tv_best_moving, R.id.cl_main_board, R.id.iv_continue, R.id.iv_newgame, R.id.iv_solve, R.id.iv_quit, R.id.cl_menu_box, R.id.iv_menu, R.id.cl_score_board})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 this.finish();
                 break;
-            case R.id.tv_current_timer:
-                break;
             case R.id.tv_current_moving:
                 break;
             case R.id.tv_best_moving:
                 break;
-            case R.id.cl_main_board:
-
+            case R.id.cl_score_board:
+                if(timer.started){
+                    timer.Stop();
+                    timer.Pause();
+                    firstMoving = false;
+                }
                 break;
             case R.id.iv_continue:
                 clMenuBox.setVisibility(View.GONE);
+                if(firstMoving) timer.Continue();
                 onTouchable[0] = true;
                 break;
             case R.id.iv_newgame:
                 numberMoving = 0;
                 tvCurrentMoving.setText("0");
-                tvCurrentTimer.setText("00:00:00");
+                if(firstMoving) timer.Stop();
                 onTouchable[0] = true;
                 clMenuBox.setVisibility(View.GONE);
                 Initialization();
@@ -116,6 +135,7 @@ public class MainGameActivity extends AppCompatActivity {
                 break;
             case R.id.iv_menu:
                 clMenuBox.setVisibility(View.VISIBLE);
+                if(firstMoving) timer.Pause();
                 onTouchable[0] = false;
                 break;
 
@@ -123,6 +143,8 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     private void Define() {
+        chronometer = findViewById(R.id.cr_chromometer);
+
 
         ivPuzzle[0][0] = (ImageView) findViewById(R.id.iv_puzzle_0_0);
         ivPuzzle[0][1] = (ImageView) findViewById(R.id.iv_puzzle_0_1);
@@ -145,7 +167,9 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     private void Initialization() {
+        firstMoving = false;
         numberMoving = 0;
+        timer = new Timer(chronometer, 0);
         emptyPuzzle = new SpecialPuzzle(0, 0, 0, true);
         for (int line = 0; line < HEIGHT; line++) {
             for (int column = 0; column < WIDTH; column++) {
@@ -182,11 +206,20 @@ public class MainGameActivity extends AppCompatActivity {
         });
 
 
+
+
     }
+
+
 
     private boolean swapContent(int dir) {
         if (!onTouchable[0] || !onTouchable[1] || !onTouchable[2] || !onTouchable[3] || !onTouchable[4])
             return false;
+        if(!firstMoving){
+            firstMoving = true;
+            timer.Reset();
+
+        }
 
         int oldX = emptyPuzzle.x - directX[dir];
         int oldY = emptyPuzzle.y - directY[dir];
@@ -206,7 +239,10 @@ public class MainGameActivity extends AppCompatActivity {
         tvCurrentMoving.setText(String.valueOf(++numberMoving));
         boolean isWin = autoCheckCorrect(puzzle);
         if (isWin) {
+            timer.Pause();
             Toast.makeText(MainGameActivity.this, "Congratulations", Toast.LENGTH_SHORT).show();
+        }else{
+            if(timer.isPausing) timer.Continue();
         }
 
         return true;
@@ -226,6 +262,10 @@ public class MainGameActivity extends AppCompatActivity {
     public void onBackPressed() {
         clMenuBox.setVisibility(View.VISIBLE);
         onTouchable[0] = false;
+    }
+
+    @OnClick(R.id.iv_menu)
+    public void onViewClicked() {
     }
 
     private class myGestureDetector implements GestureDetector.OnGestureListener {
