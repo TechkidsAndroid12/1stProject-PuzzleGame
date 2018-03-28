@@ -132,12 +132,11 @@ public class MainGameActivity extends AppCompatActivity {
                 break;
             case R.id.iv_solve:
                 int[][] newTable = getNewTable(puzzle);
-                String solution = SolvingPuzzle.solving(newTable);
+                String solution = SolvingPuzzle.solving(puzzle);
+
                 String show = "";
-
-
                 for(int i = 0 ; i  < 4 ;i ++){
-                    for(int j = 0 ;j < 4 ;j ++) show += (" " + newTable[i][j]);
+                    for(int j = 0 ;j < 4 ;j ++) show += (" " + puzzle[i][j]);
                     show += " \n";
                 }
                 Log.d(TAG, "onViewClicked: " + show);
@@ -211,10 +210,10 @@ public class MainGameActivity extends AppCompatActivity {
 
         numberMoving = 0;
         timer = new Timer(chronometer, 0);
-        emptyPuzzle = new SpecialPuzzle(0, 0, 0, true);
+        emptyPuzzle = new SpecialPuzzle(HEIGHT-1, WIDTH-1, 0, true);
         for (int line = 0; line < HEIGHT; line++) {
             for (int column = 0; column < WIDTH; column++) {
-                puzzle[line][column] = line * WIDTH + column;
+                puzzle[line][column] = (line * WIDTH + column + 1)%(HEIGHT*WIDTH);
             }
         }
         puzzle[emptyPuzzle.x][emptyPuzzle.y] = emptyPuzzle.value;
@@ -224,8 +223,8 @@ public class MainGameActivity extends AppCompatActivity {
                 ivPuzzle[line][column].setBackgroundResource(R.drawable.border4);
             }
         }
-        ivPuzzle[0][0].setImageDrawable(null);
-        ivPuzzle[0][0].setBackground(null);
+        ivPuzzle[HEIGHT-1][WIDTH-1].setImageDrawable(null);
+        ivPuzzle[HEIGHT-1][WIDTH-1].setBackground(null);
 
 
         for (int position = 0; position <= 4; position++) {

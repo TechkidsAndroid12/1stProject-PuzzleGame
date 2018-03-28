@@ -1,6 +1,11 @@
 package com.example.mypc.a15puzzlegametechkids;
 
+import android.support.annotation.NonNull;
+
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -20,7 +25,7 @@ class COORD {
 }
 
 class state {
-    public int[][] table = new int[4][4];
+    public int[][] table = new int[6][6];
     public int cost;
     public COORD pos0;
     public String lastMove = "";
@@ -41,7 +46,7 @@ public class SolvingPuzzle {
     static Comparator<state> comparator = new StateComparator();
     static PriorityQueue<state> heap = new PriorityQueue<state>(1000000, comparator);
 
-    static Set<int[][]> visited;
+    private static Set<int[][]> visited ;
 
     public static String solving(int[][] table) {
         state node = new state(table, 0, locate(0, table), "");

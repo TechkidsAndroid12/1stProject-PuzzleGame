@@ -262,11 +262,11 @@
             android:layout_height="70dp"
             android:layout_marginBottom="1dp"
             android:layout_marginEnd="1dp"
-            android:background="@null"
+            android:background="@drawable/border4"
             android:elevation="16dp"
             app:layout_constraintBottom_toTopOf="@+id/iv_puzzle_1_0"
             app:layout_constraintEnd_toStartOf="@+id/iv_puzzle_0_1"
-            app:srcCompat="@null" />
+            app:srcCompat="@drawable/aa" />
 
         <ImageView
             android:id="@+id/iv_puzzle_0_1"
@@ -442,11 +442,11 @@
             android:layout_height="70dp"
             android:layout_marginStart="1dp"
             android:layout_marginTop="1dp"
-            android:background="@drawable/border4"
+            android:background="@null"
             android:elevation="16dp"
             app:layout_constraintStart_toEndOf="@+id/iv_puzzle_3_2"
             app:layout_constraintTop_toBottomOf="@+id/iv_puzzle_2_3"
-            app:srcCompat="@drawable/dd" />
+            app:srcCompat="@null" />
 
         <android.support.constraint.Guideline
             android:id="@+id/gl_vertical_center"
