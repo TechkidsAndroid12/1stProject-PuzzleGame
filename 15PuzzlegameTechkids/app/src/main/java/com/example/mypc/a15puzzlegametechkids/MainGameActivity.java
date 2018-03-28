@@ -51,7 +51,8 @@ public class MainGameActivity extends AppCompatActivity {
     TextView tvBestResult;
     @BindView(R.id.tv_best_timer)
     TextView tvBestTimer;
-
+    ConstraintLayout clDielogReset;
+    View vCancelDielog, vYesDielog, vNoDielog;
 
 
     Timer timer;
@@ -62,7 +63,7 @@ public class MainGameActivity extends AppCompatActivity {
     private ImageView[][] ivPuzzle = new ImageView[10][10];
     private GestureDetector gestureDetector;
     private SpecialPuzzle emptyPuzzle;
-    private Integer[][] puzzle = new Integer[6][6];
+    private int[][] puzzle = new int[6][6];
     private boolean[] onTouchable = new boolean[6];
     private boolean firstMoving = false;
     private final int[] directX = {0, -1, 0, 1};
@@ -94,12 +95,14 @@ public class MainGameActivity extends AppCompatActivity {
         setupUI();
 
 
+
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_current_moving, R.id.tv_best_moving, R.id.cl_main_board, R.id.iv_continue, R.id.iv_newgame, R.id.iv_solve, R.id.iv_quit, R.id.cl_menu_box, R.id.iv_menu, R.id.cl_score_board})
+    @OnClick({R.id.iv_back, R.id.tv_current_moving, R.id.tv_best_moving, R.id.cl_main_board, R.id.iv_continue, R.id.iv_newgame, R.id.iv_solve, R.id.iv_quit, R.id.cl_menu_box, R.id.iv_menu, R.id.cl_score_board, R.id.v_cancel_dielog, R.id.v_no_dielog, R.id.v_yes_dielog})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                if(!onTouchable[0]) break;
                 this.finish();
                 break;
             case R.id.tv_current_moving:
@@ -107,26 +110,31 @@ public class MainGameActivity extends AppCompatActivity {
             case R.id.tv_best_moving:
                 break;
             case R.id.cl_score_board:
-                if(timer.started){
-                    timer.Stop();
-                    timer.Pause();
-                    firstMoving = false;
-                }
+                clDielogReset.setVisibility(View.VISIBLE);
+
+                if (firstMoving) timer.Pause();
+                onTouchable[0] = false;
+
+
                 break;
             case R.id.iv_continue:
                 clMenuBox.setVisibility(View.GONE);
-                if(firstMoving) timer.Continue();
+                if (firstMoving) timer.Continue();
                 onTouchable[0] = true;
                 break;
             case R.id.iv_newgame:
                 numberMoving = 0;
                 tvCurrentMoving.setText("0");
-                if(firstMoving) timer.Stop();
+                if (firstMoving) timer.Stop();
                 onTouchable[0] = true;
                 clMenuBox.setVisibility(View.GONE);
                 Initialization();
                 break;
             case R.id.iv_solve:
+                String solution = SolvingPuzzle.solving(puzzle);
+                Log.d(TAG, "onViewClicked: " + solution);
+                clMenuBox.setVisibility(View.GONE);
+                onTouchable[0] = true;
                 break;
             case R.id.iv_quit:
                 this.finish();
@@ -134,9 +142,29 @@ public class MainGameActivity extends AppCompatActivity {
             case R.id.cl_menu_box:
                 break;
             case R.id.iv_menu:
+                if(!onTouchable[0]) break;
                 clMenuBox.setVisibility(View.VISIBLE);
-                if(firstMoving) timer.Pause();
+                if (firstMoving) timer.Pause();
                 onTouchable[0] = false;
+                break;
+            case R.id.v_cancel_dielog:
+                clDielogReset.setVisibility(View.GONE);
+                onTouchable[0] = true;
+                break;
+            case R.id.v_yes_dielog:
+                if (timer.started) {
+                    timer.Stop();
+                    timer.Pause();
+                    firstMoving = false;
+                }
+                numberMoving = 0;
+                tvCurrentMoving.setText("0");
+                onTouchable[0] = true;
+                clDielogReset.setVisibility(View.GONE);
+                break;
+            case R.id.v_no_dielog:
+                clDielogReset.setVisibility(View.GONE);
+                onTouchable[0] = true;
                 break;
 
         }
@@ -144,7 +172,10 @@ public class MainGameActivity extends AppCompatActivity {
 
     private void Define() {
         chronometer = findViewById(R.id.cr_chromometer);
-
+        clDielogReset = findViewById(R.id.cl_dielog__reset);
+        vCancelDielog = findViewById(R.id.v_cancel_dielog);
+        vYesDielog = findViewById(R.id.v_yes_dielog);
+        vNoDielog = findViewById(R.id.v_no_dielog);
 
         ivPuzzle[0][0] = (ImageView) findViewById(R.id.iv_puzzle_0_0);
         ivPuzzle[0][1] = (ImageView) findViewById(R.id.iv_puzzle_0_1);
@@ -168,6 +199,7 @@ public class MainGameActivity extends AppCompatActivity {
 
     private void Initialization() {
         firstMoving = false;
+
         numberMoving = 0;
         timer = new Timer(chronometer, 0);
         emptyPuzzle = new SpecialPuzzle(0, 0, 0, true);
@@ -206,16 +238,13 @@ public class MainGameActivity extends AppCompatActivity {
         });
 
 
-
-
     }
-
 
 
     private boolean swapContent(int dir) {
         if (!onTouchable[0] || !onTouchable[1] || !onTouchable[2] || !onTouchable[3] || !onTouchable[4])
             return false;
-        if(!firstMoving){
+        if (!firstMoving) {
             firstMoving = true;
             timer.Reset();
 
@@ -241,14 +270,14 @@ public class MainGameActivity extends AppCompatActivity {
         if (isWin) {
             timer.Pause();
             Toast.makeText(MainGameActivity.this, "Congratulations", Toast.LENGTH_SHORT).show();
-        }else{
-            if(timer.isPausing) timer.Continue();
+        } else {
+            if (timer.isPausing) timer.Continue();
         }
 
         return true;
     }
 
-    private boolean autoCheckCorrect(Integer[][] puzzles) {
+    private boolean autoCheckCorrect(int[][] puzzles) {
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < WIDTH; j++) {
                 if (puzzles[i][j] != i * WIDTH + j) return false;
