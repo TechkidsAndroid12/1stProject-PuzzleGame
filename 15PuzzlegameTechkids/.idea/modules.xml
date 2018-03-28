@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/15PuzzlegameTechkids.iml" filepath="$PROJECT_DIR$/15PuzzlegameTechkids.iml" />
+      <module fileurl="file://E:\Data\AndroidStudioProjects\1stProject-PuzzleGame\15PuzzlegameTechkids\15PuzzlegameTechkids.iml" filepath="E:\Data\AndroidStudioProjects\1stProject-PuzzleGame\15PuzzlegameTechkids\15PuzzlegameTechkids.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://E:\Data\AndroidStudioProjects\1stProject-PuzzleGame\15PuzzlegameTechkids\app\app.iml" filepath="E:\Data\AndroidStudioProjects\1stProject-PuzzleGame\15PuzzlegameTechkids\app\app.iml" />
     </modules>
   </component>
 </project>
