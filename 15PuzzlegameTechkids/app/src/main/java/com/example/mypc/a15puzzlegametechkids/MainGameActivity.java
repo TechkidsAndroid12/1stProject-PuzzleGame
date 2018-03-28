@@ -131,8 +131,17 @@ public class MainGameActivity extends AppCompatActivity {
                 Initialization();
                 break;
             case R.id.iv_solve:
-                String solution = SolvingPuzzle.solving(puzzle);
-                Log.d(TAG, "onViewClicked: " + solution);
+                int[][] newTable = getNewTable(puzzle);
+                String solution = SolvingPuzzle.solving(newTable);
+                String show = "";
+
+
+                for(int i = 0 ; i  < 4 ;i ++){
+                    for(int j = 0 ;j < 4 ;j ++) show += (" " + newTable[i][j]);
+                    show += " \n";
+                }
+                Log.d(TAG, "onViewClicked: " + show);
+                Toast.makeText(MainGameActivity.this, show, Toast.LENGTH_SHORT).show();
                 clMenuBox.setVisibility(View.GONE);
                 onTouchable[0] = true;
                 break;
@@ -240,6 +249,16 @@ public class MainGameActivity extends AppCompatActivity {
 
     }
 
+    private int[][] getNewTable(int[][] currentTable){
+        int[][] table = new int[6][6];
+        for(int i = 0 ;i < HEIGHT ;i ++){
+            for(int j = 0 ;j < WIDTH ;j ++){
+                table[i][j] = (currentTable[i][j] + 1) % (HEIGHT * WIDTH);
+            }
+        }
+
+        return table;
+    }
 
     private boolean swapContent(int dir) {
         if (!onTouchable[0] || !onTouchable[1] || !onTouchable[2] || !onTouchable[3] || !onTouchable[4])
