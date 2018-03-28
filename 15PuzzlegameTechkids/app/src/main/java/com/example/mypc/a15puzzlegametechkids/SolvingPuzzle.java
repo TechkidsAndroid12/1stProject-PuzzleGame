@@ -1,7 +1,9 @@
 package com.example.mypc.a15puzzlegametechkids;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -39,6 +41,21 @@ class state {
         this.pos0 = pos0;
         this.lastMove = lastMove;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        state state = (state) o;
+
+        return Arrays.deepEquals(table, state.table);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(table);
+    }
 }
 
 public class SolvingPuzzle {
@@ -46,17 +63,21 @@ public class SolvingPuzzle {
     static Comparator<state> comparator = new StateComparator();
     static PriorityQueue<state> heap = new PriorityQueue<state>(1000000, comparator);
 
-    private static Set<int[][]> visited ;
-
+    private static Set<state> visited = new HashSet<state>();
+    private static final String TAG = "SolvingPuzzle";
     public static String solving(int[][] table) {
-        state node = new state(table, 0, locate(0, table), "");
+        int[][] tableTemp = new int[4][4];
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 4; j++)
+                tableTemp[i][j] = table[i][j];
+        state node = new state(tableTemp, 0, locate(0, table), "");
 
         //complete first row and first column
         restruct(node);
 
         //A* algorithm
         heap.add(node);
-        visited.add(node.table);
+        visited.add(node);
 
         while (true) {
             node = heap.poll();
@@ -64,6 +85,7 @@ public class SolvingPuzzle {
             neighbor(node);
 
             if (StateComparator.HeuristicCost(node) == 0) break;
+            //break;
         }
 
         //empty data
@@ -93,15 +115,21 @@ public class SolvingPuzzle {
             }
         } while (!result.equals(node.lastMove));
 
+        Log.d(TAG, "solving: " + result);
         return result;
     }
 
     private static void neighbor(state node) {
         int pivot;
         state temp;
+        int[][] tableTemp;
         if (node.pos0.X > 0) {
-            temp = node;
-            temp.pos0.X--;
+            tableTemp = new int[4][4];
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
+                    tableTemp[i][j] = node.table[i][j];
+            temp = new state(tableTemp, node.cost, new COORD(node.pos0.X, node.pos0.Y), node.lastMove);
+            temp.pos0.X -= 1;
             temp.lastMove += "D";
             pivot = temp.table[node.pos0.X][node.pos0.Y];
             temp.table[node.pos0.X][node.pos0.Y] = temp.table[temp.pos0.X][temp.pos0.Y];
@@ -110,12 +138,16 @@ public class SolvingPuzzle {
 
             if (!visited.contains(temp.table)) {
                 heap.add(temp);
-                visited.add(temp.table);
+                visited.add(temp);
             }
         }
 
         if (node.pos0.X < 4 - 1) {
-            temp = node;
+            tableTemp = new int[4][4];
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
+                    tableTemp[i][j] = node.table[i][j];
+            temp = new state(tableTemp, node.cost, new COORD(node.pos0.X, node.pos0.Y), node.lastMove);
             temp.pos0.X++;
             temp.lastMove += "U";
             pivot = temp.table[node.pos0.X][node.pos0.Y];
@@ -125,12 +157,16 @@ public class SolvingPuzzle {
 
             if (!visited.contains(temp.table)) {
                 heap.add(temp);
-                visited.add(temp.table);
+                visited.add(temp);
             }
         }
 
         if (node.pos0.Y > 0) {
-            temp = node;
+            tableTemp = new int[4][4];
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
+                    tableTemp[i][j] = node.table[i][j];
+            temp = new state(tableTemp, node.cost, new COORD(node.pos0.X, node.pos0.Y), node.lastMove);
             temp.pos0.Y--;
             temp.lastMove += "R";
             pivot = temp.table[node.pos0.X][node.pos0.Y];
@@ -140,12 +176,16 @@ public class SolvingPuzzle {
 
             if (!visited.contains(temp.table)) {
                 heap.add(temp);
-                visited.add(temp.table);
+                visited.add(temp);
             }
         }
 
         if (node.pos0.Y < 4 - 1) {
-            temp = node;
+            tableTemp = new int[4][4];
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
+                    tableTemp[i][j] = node.table[i][j];
+            temp = new state(tableTemp, node.cost, new COORD(node.pos0.X, node.pos0.Y), node.lastMove);
             temp.pos0.Y++;
             temp.lastMove += "L";
             pivot = temp.table[node.pos0.X][node.pos0.Y];
@@ -155,7 +195,7 @@ public class SolvingPuzzle {
 
             if (!visited.contains(temp.table)) {
                 heap.add(temp);
-                visited.add(temp.table);
+                visited.add(temp);
             }
         }
 
