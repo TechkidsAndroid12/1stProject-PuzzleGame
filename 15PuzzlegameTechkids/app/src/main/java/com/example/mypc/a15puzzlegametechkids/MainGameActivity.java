@@ -1,6 +1,7 @@
 package com.example.mypc.a15puzzlegametechkids;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +14,8 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -126,13 +129,51 @@ public class MainGameActivity extends AppCompatActivity {
                 numberMoving = 0;
                 tvCurrentMoving.setText("0");
                 if (firstMoving) timer.Stop();
+
                 onTouchable[0] = true;
                 clMenuBox.setVisibility(View.GONE);
+
                 Initialization();
+                getRandomMap();
                 break;
             case R.id.iv_solve:
                 int[][] newTable = getNewTable(puzzle);
-                String solution = SolvingPuzzle.solving(puzzle);
+                final String solution = SolvingPuzzle.solving(puzzle);
+                String direct = "RULD";
+
+
+                CountDownTimer countDownTimer = new CountDownTimer(solution.length()*250, 250) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        int pos = (int) (solution.length())  - (int) (millisUntilFinished)/250-1;
+                        switch ((int)solution.charAt(pos)){
+                            case (int)('L') : swapContent(RIGHT_TO_LEFT);
+                            break;
+                            case (int)('U') : swapContent(DOWN_TO_UP);
+                            break;
+                            case (int)('D') : swapContent(UP_TO_DOWN);
+                            break;
+                            case (int)('R') : swapContent(LEFT_TO_RIGHT);
+                            break;
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        switch ((int)solution.charAt(solution.length() - 1)){
+                            case (int)('L') : swapContent(RIGHT_TO_LEFT);
+                                break;
+                            case (int)('U') : swapContent(DOWN_TO_UP);
+                                break;
+                            case (int)('D') : swapContent(UP_TO_DOWN);
+                                break;
+                            case (int)('R') : swapContent(LEFT_TO_RIGHT);
+                                break;
+                        }
+
+                    }
+                }.start();
+
 
                 String show = "";
                 for(int i = 0 ; i  < 4 ;i ++){
@@ -140,7 +181,7 @@ public class MainGameActivity extends AppCompatActivity {
                     show += " \n";
                 }
                 Log.d(TAG, "onViewClicked: " + show);
-                Toast.makeText(MainGameActivity.this, show, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainGameActivity.this, solution, Toast.LENGTH_SHORT).show();
                 clMenuBox.setVisibility(View.GONE);
                 onTouchable[0] = true;
                 break;
@@ -231,6 +272,33 @@ public class MainGameActivity extends AppCompatActivity {
             onTouchable[position] = true;
         }
 
+    }
+
+    private void getRandomMap(){
+        int countTimes = 0;
+        Random random = new Random();
+        while(countTimes < 100){
+
+            int dir = random.nextInt(4);
+            int currentX = emptyPuzzle.x;
+            int currentY = emptyPuzzle.y;
+            int newX = currentX - directX[dir];
+            int newY = currentY - directY[dir];
+            if(newX < 0 || newY < 0 || newX >= HEIGHT || newY >= WIDTH){
+                continue;
+            }
+
+            countTimes ++;
+
+            puzzle[currentX][currentY] = puzzle[newX][newY];
+            ivPuzzle[currentX][currentY].setImageDrawable(ivPuzzle[newX][newY].getDrawable());
+            ivPuzzle[currentX][currentY].setBackgroundResource(R.drawable.border4);
+            puzzle[newX][newY] = 0;
+            ivPuzzle[newX][newY].setImageDrawable(null);
+            ivPuzzle[newX][newY].setBackground(null);
+            emptyPuzzle.x = newX;
+            emptyPuzzle.y = newY;
+        }
     }
 
     private void setupUI() {
