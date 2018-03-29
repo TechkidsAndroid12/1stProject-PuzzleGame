@@ -56,6 +56,13 @@ class state {
     public int hashCode() {
         return Arrays.deepHashCode(table);
     }
+
+    @Override
+    public String toString() {
+        return "state{" +
+                "table=" + Arrays.toString(table) +
+                '}';
+    }
 }
 
 public class SolvingPuzzle {
@@ -85,7 +92,6 @@ public class SolvingPuzzle {
             neighbor(node);
 
             if (StateComparator.HeuristicCost(node) == 0) break;
-            //break;
         }
 
         //empty data
@@ -113,9 +119,9 @@ public class SolvingPuzzle {
                 }
                 result += node.lastMove.charAt(i);
             }
+
         } while (!result.equals(node.lastMove));
 
-        Log.d(TAG, "solving: " + result);
         return result;
     }
 
@@ -136,7 +142,7 @@ public class SolvingPuzzle {
             temp.table[temp.pos0.X][temp.pos0.Y] = pivot;
             temp.cost++;
 
-            if (!visited.contains(temp.table)) {
+            if (!visited.contains(temp)) {
                 heap.add(temp);
                 visited.add(temp);
             }
@@ -155,7 +161,7 @@ public class SolvingPuzzle {
             temp.table[temp.pos0.X][temp.pos0.Y] = pivot;
             temp.cost++;
 
-            if (!visited.contains(temp.table)) {
+            if (!visited.contains(temp)) {
                 heap.add(temp);
                 visited.add(temp);
             }
@@ -174,7 +180,7 @@ public class SolvingPuzzle {
             temp.table[temp.pos0.X][temp.pos0.Y] = pivot;
             temp.cost++;
 
-            if (!visited.contains(temp.table)) {
+            if (!visited.contains(temp)) {
                 heap.add(temp);
                 visited.add(temp);
             }
@@ -193,7 +199,7 @@ public class SolvingPuzzle {
             temp.table[temp.pos0.X][temp.pos0.Y] = pivot;
             temp.cost++;
 
-            if (!visited.contains(temp.table)) {
+            if (!visited.contains(temp)) {
                 heap.add(temp);
                 visited.add(temp);
             }

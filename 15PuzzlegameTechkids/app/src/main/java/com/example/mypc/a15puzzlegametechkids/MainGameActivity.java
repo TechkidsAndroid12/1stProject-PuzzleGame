@@ -139,8 +139,8 @@ public class MainGameActivity extends AppCompatActivity {
             case R.id.iv_solve:
                 int[][] newTable = getNewTable(puzzle);
                 final String solution = SolvingPuzzle.solving(puzzle);
+                Log.d(TAG, "onViewClicked: " + solution);
                 String direct = "RULD";
-
 
                 CountDownTimer countDownTimer = new CountDownTimer(solution.length()*250, 250) {
                     @Override
