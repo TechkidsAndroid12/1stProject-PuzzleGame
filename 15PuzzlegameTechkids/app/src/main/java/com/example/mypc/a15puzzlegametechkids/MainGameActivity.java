@@ -60,6 +60,8 @@ public class MainGameActivity extends AppCompatActivity {
 
     Timer timer;
 
+    int temp;
+
 
     private static final String TAG = "MainGameActivity";
     Chronometer chronometer;
@@ -134,7 +136,7 @@ public class MainGameActivity extends AppCompatActivity {
                 clMenuBox.setVisibility(View.GONE);
 
                 Initialization();
-                getRandomMap();
+                getRandomMap(40);
                 break;
             case R.id.iv_solve:
                 int[][] newTable = getNewTable(puzzle);
@@ -146,29 +148,45 @@ public class MainGameActivity extends AppCompatActivity {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         int pos = (int) (solution.length())  - (int) (millisUntilFinished)/250-1;
+
+                        int dir = RIGHT_TO_LEFT;
                         switch ((int)solution.charAt(pos)){
-                            case (int)('L') : swapContent(RIGHT_TO_LEFT);
+                            case (int)('L') : dir = RIGHT_TO_LEFT;
                             break;
-                            case (int)('U') : swapContent(DOWN_TO_UP);
+                            case (int)('U') : dir = DOWN_TO_UP;
                             break;
-                            case (int)('D') : swapContent(UP_TO_DOWN);
+                            case (int)('D') : dir = UP_TO_DOWN;
                             break;
-                            case (int)('R') : swapContent(LEFT_TO_RIGHT);
+                            case (int)('R') : dir = LEFT_TO_RIGHT;
                             break;
+                        }
+
+                        boolean Swapable = swapContent(dir);
+                        if(!Swapable){
+                            Log.d(TAG, "instance initializer: " + "wrong");
+                            Toast.makeText(MainGameActivity.this, "wrong", Toast.LENGTH_SHORT).show();
                         }
                     }
 
+
                     @Override
                     public void onFinish() {
-                        switch ((int)solution.charAt(solution.length() - 1)){
-                            case (int)('L') : swapContent(RIGHT_TO_LEFT);
+                        int dir = RIGHT_TO_LEFT;
+                        switch ((int)solution.charAt(solution.length()-1)){
+                            case (int)('L') : dir = RIGHT_TO_LEFT;
                                 break;
-                            case (int)('U') : swapContent(DOWN_TO_UP);
+                            case (int)('U') : dir = DOWN_TO_UP;
                                 break;
-                            case (int)('D') : swapContent(UP_TO_DOWN);
+                            case (int)('D') : dir = UP_TO_DOWN;
                                 break;
-                            case (int)('R') : swapContent(LEFT_TO_RIGHT);
+                            case (int)('R') : dir = LEFT_TO_RIGHT;
                                 break;
+                        }
+
+                        boolean Swapable = swapContent(dir);
+                        if(!Swapable){
+                            Log.d(TAG, "instance initializer: " + "wrong");
+                            Toast.makeText(MainGameActivity.this, "wrong", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -274,10 +292,10 @@ public class MainGameActivity extends AppCompatActivity {
 
     }
 
-    private void getRandomMap(){
+    private void getRandomMap(int randomTimes){
         int countTimes = 0;
         Random random = new Random();
-        while(countTimes < 100){
+        while(countTimes < randomTimes){
 
             int dir = random.nextInt(4);
             int currentX = emptyPuzzle.x;

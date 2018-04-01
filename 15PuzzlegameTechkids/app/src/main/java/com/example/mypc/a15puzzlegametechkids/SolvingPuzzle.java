@@ -66,7 +66,7 @@ public class SolvingPuzzle {
     private static Set<state> visited = new HashSet<state>();
     private static final String TAG = "SolvingPuzzle";
     public static String solving(int[][] table) {
-        int[][] tableTemp = new int[4][4];
+        int[][] tableTemp = new int[6][6];
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
                 tableTemp[i][j] = table[i][j];
@@ -124,7 +124,7 @@ public class SolvingPuzzle {
         state temp;
         int[][] tableTemp;
         if (node.pos0.X > 0) {
-            tableTemp = new int[4][4];
+            tableTemp = new int[6][6];
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                     tableTemp[i][j] = node.table[i][j];
@@ -143,7 +143,7 @@ public class SolvingPuzzle {
         }
 
         if (node.pos0.X < 4 - 1) {
-            tableTemp = new int[4][4];
+            tableTemp = new int[6][6];
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                     tableTemp[i][j] = node.table[i][j];
@@ -162,7 +162,7 @@ public class SolvingPuzzle {
         }
 
         if (node.pos0.Y > 0) {
-            tableTemp = new int[4][4];
+            tableTemp = new int[6][6];
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                     tableTemp[i][j] = node.table[i][j];
@@ -181,7 +181,7 @@ public class SolvingPuzzle {
         }
 
         if (node.pos0.Y < 4 - 1) {
-            tableTemp = new int[4][4];
+            tableTemp = new int[6][6];
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                     tableTemp[i][j] = node.table[i][j];
@@ -515,6 +515,8 @@ class StateComparator implements Comparator<state> {
         if (o1.cost + HeuristicCost(o1) >= o2.cost + HeuristicCost(o2)) return 1;
         else return 0;
     }
+
+
 
     public static int HeuristicCost(state node) {
         int res = 0;
