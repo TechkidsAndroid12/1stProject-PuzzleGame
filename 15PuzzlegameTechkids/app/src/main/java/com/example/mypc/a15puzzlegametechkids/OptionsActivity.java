@@ -1,5 +1,6 @@
 package com.example.mypc.a15puzzlegametechkids;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -42,11 +43,13 @@ public class OptionsActivity extends AppCompatActivity {
     @BindView(R.id.cl_main_view)
     ConstraintLayout clMainView;
 
-    private int[] idPreview = {R.drawable.tnh, R.drawable.tnhone, R.drawable.tnhtwo, R.drawable.tndthree, R.drawable.tnhfour, R.drawable.tnhone, R.drawable.tnhtwo, R.drawable.tnh, R.drawable.tnhone, R.drawable.tnhtwo, 0};
+    Sound sound = new Sound(this);
+
+    private int[] idPreview = {R.drawable.imagezero, R.drawable.imageone, R.drawable.imagetwo, R.drawable.imagethree, R.drawable.tnhfour, R.drawable.tnhone, R.drawable.tnhtwo, R.drawable.imageone, R.drawable.tnhone, R.drawable.tnhtwo, 0};
     private int currentPosition = 1;
     private final int NEXT_TO_LEFT = -1;
     private final int NEXT_TO_RIGHT = 1;
-    private final int NUM_PREVIEWS = 10;
+    private final int NUM_PREVIEWS = 4;
     private static final String TAG = "OptionsActivity";
     private boolean[] onTouchable = new boolean[4];
 
@@ -72,17 +75,25 @@ public class OptionsActivity extends AppCompatActivity {
         switch (view.getId()) {
 
             case R.id.iv_arrow_left:
+
                 changePicture(NEXT_TO_LEFT);
                 break;
             case R.id.iv_arrow_right:
+
                 changePicture(NEXT_TO_RIGHT);
 
                 break;
             case R.id.iv_back:
-                this.finish();
+                sound.playSound(R.raw.snapping);
+                Intent intentBack = new Intent(OptionsActivity.this, MainGameActivity.class);
+                intentBack.putExtra("PositionOfMainImage", 1);
+                startActivity(intentBack);
                 break;
             case R.id.iv_check:
-                this.finish();
+                sound.playSound(R.raw.snapping);
+                Intent intentSave = new Intent(OptionsActivity.this, MainGameActivity.class);
+                intentSave.putExtra("PositionOfMainImage", currentPosition);
+                startActivity(intentSave);
                 break;
 
         }
@@ -128,6 +139,7 @@ public class OptionsActivity extends AppCompatActivity {
 
     private boolean changePicture(final int dir) {
         if(!onTouchable[0] || !onTouchable[1] || !onTouchable[2]) return false;
+        sound.playSound(R.raw.snapping);
 
         //  clPreviewPicture.setVisibility(View.VISIBLE);
         currentPosition = (dir + currentPosition + NUM_PREVIEWS) % NUM_PREVIEWS;
