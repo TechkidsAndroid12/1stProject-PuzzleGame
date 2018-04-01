@@ -1,7 +1,9 @@
 package com.example.mypc.a15puzzlegametechkids;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,12 +20,16 @@ import android.widget.Toast;
 import com.example.mypc.a15puzzlegametechkids.Database.DataManager;
 
 import java.util.Random;
+import java.util.Stack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainGameActivity extends AppCompatActivity {
+    private static final int RANDOM_TIMES = 500;
+    String showSolution = "";
+    Stack<Integer> stackResult = new Stack<Integer>();
 
     // declaration
 
@@ -59,10 +65,11 @@ public class MainGameActivity extends AppCompatActivity {
     ConstraintLayout clDielogReset;
     View vCancelDielog, vYesDielog, vNoDielog;
 
+    Sound sound = new Sound(this);
+
 
     Timer timer;
-
-    int temp;
+    private View vReset, vForget;
 
 
     private static final String TAG = "MainGameActivity";
@@ -71,18 +78,41 @@ public class MainGameActivity extends AppCompatActivity {
     private GestureDetector gestureDetector;
     private SpecialPuzzle emptyPuzzle;
     private int[][] puzzle = new int[6][6];
-    private boolean[] onTouchable = new boolean[6];
+    private boolean onTouchable = false;
+    private boolean turnOnSound = false;
     private boolean firstMoving = false;
     private final int[] directX = {0, -1, 0, 1};
     private final int[] directY = {1, 0, -1, 0};
     private final int LEFT_TO_RIGHT = 0, DOWN_TO_UP = 1, RIGHT_TO_LEFT = 2, UP_TO_DOWN = 3;
     private final int WIDTH = 4, HEIGHT = 4;
     private int numberMoving = 0;
-    private int[][] idIvPuzzles = {
-            {R.drawable.aa, R.drawable.ab, R.drawable.ac, R.drawable.ad},
-            {R.drawable.ba, R.drawable.bb, R.drawable.bc, R.drawable.bd},
-            {R.drawable.ca, R.drawable.cb, R.drawable.cc, R.drawable.cd},
-            {R.drawable.da, R.drawable.db, R.drawable.dc, R.drawable.dd}
+    private int positionMainImage = 1;
+    private int[][][] idIvPuzzles = {
+            {
+                    {R.drawable.aa, R.drawable.ab, R.drawable.ac, R.drawable.ad},
+                    {R.drawable.ba, R.drawable.bb, R.drawable.bc, R.drawable.bd},
+                    {R.drawable.ca, R.drawable.cb, R.drawable.cc, R.drawable.cd},
+                    {R.drawable.da, R.drawable.db, R.drawable.dc, R.drawable.dd}
+            },
+            {
+                    {R.drawable.oneaa, R.drawable.oneab, R.drawable.oneac, R.drawable.onead},
+                    {R.drawable.oneba, R.drawable.onebb, R.drawable.onebc, R.drawable.onebd},
+                    {R.drawable.oneca, R.drawable.onecb, R.drawable.onecc, R.drawable.onecd},
+                    {R.drawable.oneda, R.drawable.onedb, R.drawable.onedc, R.drawable.onedd}
+            },
+            {
+                    {R.drawable.twoaa, R.drawable.twoab, R.drawable.twoac, R.drawable.twoad},
+                    {R.drawable.twoba, R.drawable.twobb, R.drawable.twobc, R.drawable.twobd},
+                    {R.drawable.twoca, R.drawable.twocb, R.drawable.twocc, R.drawable.twocd},
+                    {R.drawable.twoda, R.drawable.twodb, R.drawable.twodc, R.drawable.twodd}
+            },
+            {
+                    {R.drawable.threeaa, R.drawable.threeab, R.drawable.threeac, R.drawable.threead},
+                    {R.drawable.threeba, R.drawable.threebb, R.drawable.threebc, R.drawable.threebd},
+                    {R.drawable.threeca, R.drawable.threecb, R.drawable.threecc, R.drawable.threecd},
+                    {R.drawable.threeda, R.drawable.threedb, R.drawable.threedc, R.drawable.threedd}
+            }
+
     };
 
 
@@ -101,18 +131,17 @@ public class MainGameActivity extends AppCompatActivity {
         Initialization();
         setupUI();
 
-        DataManager dataManager = new DataManager(this);
-        dataManager.NewScore("xx", "3:05", 2);
-        dataManager.NewScore("xx", "1:00", 10);
-        dataManager.NewScore("xx", "5:05", 6);
-        Log.d(TAG, "onCreate: " + dataManager.getAllItems());
+
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_current_moving, R.id.tv_best_moving, R.id.cl_main_board, R.id.iv_continue, R.id.iv_newgame, R.id.iv_solve, R.id.iv_quit, R.id.cl_menu_box, R.id.iv_menu, R.id.cl_score_board, R.id.v_cancel_dielog, R.id.v_no_dielog, R.id.v_yes_dielog})
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @OnClick({R.id.iv_back, R.id.tv_current_moving, R.id.tv_best_moving, R.id.cl_main_board, R.id.iv_continue, R.id.iv_newgame, R.id.iv_solve, R.id.iv_quit, R.id.cl_menu_box, R.id.iv_menu, R.id.cl_score_board, R.id.v_cancel_dielog, R.id.v_no_dielog, R.id.v_yes_dielog, R.id.v_forget, R.id.v_reset})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                if(!onTouchable[0]) break;
+
+                if (!onTouchable) break;
+                if (turnOnSound) sound.playSound(R.raw.snapping);
                 this.finish();
                 break;
             case R.id.tv_current_moving:
@@ -120,110 +149,59 @@ public class MainGameActivity extends AppCompatActivity {
             case R.id.tv_best_moving:
                 break;
             case R.id.cl_score_board:
-                clDielogReset.setVisibility(View.VISIBLE);
-
-                if (firstMoving) timer.Pause();
-                onTouchable[0] = false;
-
 
                 break;
             case R.id.iv_continue:
+                if (turnOnSound) sound.playSound(R.raw.snapping);
                 clMenuBox.setVisibility(View.GONE);
                 if (firstMoving) timer.Continue();
-                onTouchable[0] = true;
+                onTouchable = true;
                 break;
             case R.id.iv_newgame:
+                if (turnOnSound) sound.playSound(R.raw.snapping);
                 numberMoving = 0;
                 tvCurrentMoving.setText("0");
                 if (firstMoving) timer.Stop();
 
-                onTouchable[0] = true;
+                onTouchable = true;
                 clMenuBox.setVisibility(View.GONE);
 
                 Initialization();
-                getRandomMap(40);
+                getRandomMap();
                 break;
             case R.id.iv_solve:
-                int[][] newTable = getNewTable(puzzle);
-                final String solution = SolvingPuzzle.solving(puzzle);
-                Log.d(TAG, "onViewClicked: " + solution);
-                String direct = "RULD";
-
-                CountDownTimer countDownTimer = new CountDownTimer(solution.length()*250, 250) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        int pos = (int) (solution.length())  - (int) (millisUntilFinished)/250-1;
-
-                        int dir = RIGHT_TO_LEFT;
-                        switch ((int)solution.charAt(pos)){
-                            case (int)('L') : dir = RIGHT_TO_LEFT;
-                            break;
-                            case (int)('U') : dir = DOWN_TO_UP;
-                            break;
-                            case (int)('D') : dir = UP_TO_DOWN;
-                            break;
-                            case (int)('R') : dir = LEFT_TO_RIGHT;
-                            break;
-                        }
-
-                        boolean Swapable = swapContent(dir);
-                        if(!Swapable){
-                            Log.d(TAG, "instance initializer: " + "wrong");
-                            Toast.makeText(MainGameActivity.this, "wrong", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-
-                    @Override
-                    public void onFinish() {
-                        int dir = RIGHT_TO_LEFT;
-                        switch ((int)solution.charAt(solution.length()-1)){
-                            case (int)('L') : dir = RIGHT_TO_LEFT;
-                                break;
-                            case (int)('U') : dir = DOWN_TO_UP;
-                                break;
-                            case (int)('D') : dir = UP_TO_DOWN;
-                                break;
-                            case (int)('R') : dir = LEFT_TO_RIGHT;
-                                break;
-                        }
-
-                        boolean Swapable = swapContent(dir);
-                        if(!Swapable){
-                            Log.d(TAG, "instance initializer: " + "wrong");
-                            Toast.makeText(MainGameActivity.this, "wrong", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                }.start();
-
-
-                String show = "";
-                for(int i = 0 ; i  < 4 ;i ++){
-                    for(int j = 0 ;j < 4 ;j ++) show += (" " + puzzle[i][j]);
-                    show += " \n";
+                if (turnOnSound) sound.playSound(R.raw.snapping);
+                turnOnSound = false;
+                onTouchable = false;
+                boolean getSolutionable = getSolution();
+                if (!getSolutionable) {
+                    Toast.makeText(MainGameActivity.this, "All the puzzles is correct !", Toast.LENGTH_SHORT).show();
                 }
-                Log.d(TAG, "onViewClicked: " + show);
-                Toast.makeText(MainGameActivity.this, solution, Toast.LENGTH_SHORT).show();
+                turnOnSound = true;
+
                 clMenuBox.setVisibility(View.GONE);
-                onTouchable[0] = true;
+                onTouchable = true;
                 break;
             case R.id.iv_quit:
+                if (turnOnSound) sound.playSound(R.raw.snapping);
                 this.finish();
                 break;
             case R.id.cl_menu_box:
                 break;
             case R.id.iv_menu:
-                if(!onTouchable[0]) break;
+                if (turnOnSound) sound.playSound(R.raw.snapping);
+                if (!onTouchable) break;
                 clMenuBox.setVisibility(View.VISIBLE);
                 if (firstMoving) timer.Pause();
-                onTouchable[0] = false;
+                onTouchable = false;
                 break;
             case R.id.v_cancel_dielog:
+                if (turnOnSound) sound.playSound(R.raw.snapping);
                 clDielogReset.setVisibility(View.GONE);
-                onTouchable[0] = true;
+                onTouchable = true;
                 break;
             case R.id.v_yes_dielog:
+                if (turnOnSound) sound.playSound(R.raw.snapping);
                 if (timer.started) {
                     timer.Stop();
                     timer.Pause();
@@ -231,13 +209,26 @@ public class MainGameActivity extends AppCompatActivity {
                 }
                 numberMoving = 0;
                 tvCurrentMoving.setText("0");
-                onTouchable[0] = true;
+                onTouchable = true;
                 clDielogReset.setVisibility(View.GONE);
                 break;
             case R.id.v_no_dielog:
+                if (turnOnSound) sound.playSound(R.raw.snapping);
                 clDielogReset.setVisibility(View.GONE);
-                onTouchable[0] = true;
+                onTouchable = true;
                 break;
+            case R.id.v_reset:
+                if (turnOnSound) sound.playSound(R.raw.snapping);
+                clDielogReset.setVisibility(View.VISIBLE);
+                if (firstMoving) timer.Pause();
+                onTouchable = false;
+                break;
+
+            case R.id.v_forget:
+                if (turnOnSound) sound.playSound(R.raw.snapping);
+
+                break;
+
 
         }
     }
@@ -248,6 +239,8 @@ public class MainGameActivity extends AppCompatActivity {
         vCancelDielog = findViewById(R.id.v_cancel_dielog);
         vYesDielog = findViewById(R.id.v_yes_dielog);
         vNoDielog = findViewById(R.id.v_no_dielog);
+        vReset = findViewById(R.id.v_reset);
+        vForget = findViewById(R.id.v_forget);
 
         ivPuzzle[0][0] = (ImageView) findViewById(R.id.iv_puzzle_0_0);
         ivPuzzle[0][1] = (ImageView) findViewById(R.id.iv_puzzle_0_1);
@@ -270,6 +263,9 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     private void Initialization() {
+        turnOnSound = true;
+        onTouchable = true;
+        positionMainImage = getIntent().getIntExtra("PositionOfMainImage", positionMainImage);
         firstMoving = false;
 
         numberMoving = 0;
@@ -283,7 +279,7 @@ public class MainGameActivity extends AppCompatActivity {
         puzzle[emptyPuzzle.x][emptyPuzzle.y] = emptyPuzzle.value;
         for (int line = 0; line < HEIGHT; line++) {
             for (int column = 0; column < WIDTH; column++) {
-                ivPuzzle[line][column].setImageResource(idIvPuzzles[line][column]);
+                ivPuzzle[line][column].setImageResource(idIvPuzzles[positionMainImage][line][column]);
                 ivPuzzle[line][column].setBackgroundResource(R.drawable.border4);
             }
         }
@@ -291,27 +287,111 @@ public class MainGameActivity extends AppCompatActivity {
         ivPuzzle[HEIGHT-1][WIDTH-1].setBackground(null);
 
 
-        for (int position = 0; position <= 4; position++) {
-            onTouchable[position] = true;
+    }
+
+    private String getStringTable(int [][] table){
+        String string = "";
+        for(int i = 0 ;i < HEIGHT ;i ++){
+            for(int j = 0 ;j < WIDTH ;j ++){
+                string += (String.format("%4d", table[i][j]));
+            }
+            string += "\n";
         }
+        return string;
+    }
+
+    private boolean getSolution() {
+
+
+        onTouchable = false;
+
+        if (autoCheckCorrect(puzzle)) return false;
+
+        Log.d(TAG, "getSolution: " + getStringTable(puzzle));
+        Log.d(TAG, "getSolution: " + getStringTable(getNewTable(puzzle)));
+
+        String resultString = SolvingPuzzle.solving(puzzle);
+        if (resultString.length() < 1) return false;
+        stackResult.clear();
+       // for (int i = 0; i < resultString.length(); i ++)
+        for(int i = resultString.length() - 1 ;i >= 0 ;i --)
+        {
+            if (resultString.charAt(i) == 'R') stackResult.add(LEFT_TO_RIGHT);
+            else if (resultString.charAt(i) == 'U') stackResult.add(DOWN_TO_UP);
+            else if (resultString.charAt(i) == 'L') stackResult.add(RIGHT_TO_LEFT);
+            else if (resultString.charAt(i) == 'D') stackResult.add(UP_TO_DOWN);
+        }
+
+        Log.d(TAG, "getSolution: " + stackResult);
+
+        clMainBoard.setOnTouchListener(null);
+        final String[] direct = {"RIGHT", "UP", "LEFT", "DOWN"};
+        showSolution = "";
+
+
+        turnOnSound = false;
+        CountDownTimer countDownTimer = new CountDownTimer((stackResult.size() + 1) * 200, 200) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (!stackResult.isEmpty()) {
+                    int dir = stackResult.pop();
+                    showSolution += (direct[dir] + "-");
+                    swapContent(dir);
+                }
+            }
+
+            @Override
+            public void onFinish() {
+
+                while (!stackResult.isEmpty()) {
+                    int dir = stackResult.pop();
+                    showSolution += (direct[dir] + "-");
+                    swapContent(dir);
+                    turnOnSound = true;
+                }
+                clMainBoard.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        gestureDetector.onTouchEvent(event);
+                        return true;
+                    }
+                });
+                /*
+                boolean isWin = autoCheckCorrect(puzzle);
+                if (isWin) {
+                    timer.Pause();
+                    Toast.makeText(MainGameActivity.this, "Congratulations", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (timer.isPausing) timer.Continue();
+                }
+                */
+
+                Toast.makeText(MainGameActivity.this, showSolution, Toast.LENGTH_SHORT).show();
+            }
+        }.start();
+
+
+        onTouchable = true;
+        clMainBoard.setEnabled(true);
+        return true;
 
     }
 
-    private void getRandomMap(int randomTimes){
+    private void getRandomMap() {
         int countTimes = 0;
         Random random = new Random();
-        while(countTimes < randomTimes){
+        while (countTimes < RANDOM_TIMES) {
 
             int dir = random.nextInt(4);
             int currentX = emptyPuzzle.x;
             int currentY = emptyPuzzle.y;
             int newX = currentX - directX[dir];
             int newY = currentY - directY[dir];
-            if(newX < 0 || newY < 0 || newX >= HEIGHT || newY >= WIDTH){
+            if (newX < 0 || newY < 0 || newX >= HEIGHT || newY >= WIDTH) {
                 continue;
             }
 
-            countTimes ++;
+            countTimes++;
 
             puzzle[currentX][currentY] = puzzle[newX][newY];
             ivPuzzle[currentX][currentY].setImageDrawable(ivPuzzle[newX][newY].getDrawable());
@@ -327,10 +407,10 @@ public class MainGameActivity extends AppCompatActivity {
     private void setupUI() {
         gestureDetector = new GestureDetector(this, new myGestureDetector());
 
-        clMainBoard.setOnTouchListener(new View.OnTouchListener() {
+        if (onTouchable) clMainBoard.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (onTouchable[0] && onTouchable[1] && onTouchable[2] && onTouchable[3] && onTouchable[4])
+                if (onTouchable)
                     gestureDetector.onTouchEvent(motionEvent);
                 return true;
             }
@@ -339,11 +419,11 @@ public class MainGameActivity extends AppCompatActivity {
 
     }
 
-    private int[][] getNewTable(int[][] currentTable){
+    private int[][] getNewTable(int[][] currentTable) {
         int[][] table = new int[6][6];
-        for(int i = 0 ;i < HEIGHT ;i ++){
-            for(int j = 0 ;j < WIDTH ;j ++){
-                table[i][j] = (currentTable[i][j] + 1) % (HEIGHT * WIDTH);
+        for (int i = 0; i < HEIGHT; i++) {
+            for (int j = 0; j < WIDTH; j++) {
+                table[i][j] = (currentTable[i][j] + 1 + HEIGHT * WIDTH) % (HEIGHT * WIDTH);
             }
         }
 
@@ -351,8 +431,7 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     private boolean swapContent(int dir) {
-        if (!onTouchable[0] || !onTouchable[1] || !onTouchable[2] || !onTouchable[3] || !onTouchable[4])
-            return false;
+
         if (!firstMoving) {
             firstMoving = true;
             timer.Reset();
@@ -398,8 +477,9 @@ public class MainGameActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if (turnOnSound) sound.playSound(R.raw.snapping);
         clMenuBox.setVisibility(View.VISIBLE);
-        onTouchable[0] = false;
+        onTouchable = false;
     }
 
     @OnClick(R.id.iv_menu)
@@ -442,6 +522,9 @@ public class MainGameActivity extends AppCompatActivity {
 
         @Override
         public boolean onFling(MotionEvent motionEvent1, MotionEvent motionEvent2, float velocityX, float velocityY) {
+
+            if (!onTouchable) return false;
+            if (turnOnSound) sound.playSound(R.raw.swap);
 
             float fromX = motionEvent1.getX();
             float fromY = motionEvent1.getY();
