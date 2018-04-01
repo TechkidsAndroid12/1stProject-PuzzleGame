@@ -72,9 +72,6 @@ public class SolvingPuzzle {
     private static Set<state> visited = new HashSet<state>();
     private static final String TAG = "SolvingPuzzle";
     public static String solving(int[][] table) {
-<<<<<<< HEAD
-        int[][] tableTemp = new int[6][6];
-=======
        /*
         table[0][0] = 6; table[0][1] = 1; table[0][2] = 3; table[0][3] = 2;
         table[1][0] = 9; table[1][1] = 0; table[1][2] = 5; table[1][3] = 4;
@@ -89,7 +86,6 @@ public class SolvingPuzzle {
         Log.d(TAG, "solving: " + ss);
         /////////////
         int[][] tableTemp = new int[4][4];
->>>>>>> 2a696c603e21ae47302fe1b998c18989891de8fe
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
                 tableTemp[i][j] = table[i][j];
@@ -146,7 +142,7 @@ public class SolvingPuzzle {
         state temp;
         int[][] tableTemp;
         if (node.pos0.X > 0) {
-            tableTemp = new int[6][6];
+            tableTemp = new int[4][4];
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                     tableTemp[i][j] = node.table[i][j];
@@ -171,7 +167,7 @@ public class SolvingPuzzle {
         }
 
         if (node.pos0.X < 4 - 1) {
-            tableTemp = new int[6][6];
+            tableTemp = new int[4][4];
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                     tableTemp[i][j] = node.table[i][j];
@@ -190,7 +186,7 @@ public class SolvingPuzzle {
         }
 
         if (node.pos0.Y > 0) {
-            tableTemp = new int[6][6];
+            tableTemp = new int[4][4];
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                     tableTemp[i][j] = node.table[i][j];
@@ -209,7 +205,7 @@ public class SolvingPuzzle {
         }
 
         if (node.pos0.Y < 4 - 1) {
-            tableTemp = new int[6][6];
+            tableTemp = new int[4][4];
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                     tableTemp[i][j] = node.table[i][j];
@@ -592,8 +588,6 @@ class Heap {
         downheap(1);
         return res;
     }
-
-
 
     public static int HeuristicCost(state node) {
         int res = 0;
