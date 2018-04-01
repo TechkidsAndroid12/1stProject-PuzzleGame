@@ -8,9 +8,9 @@ import android.util.Log;
 
 public class ScoreModel {
     private static final String TAG = "ScoreModel";
-    String name;
-    String time;
-    int move;
+    public String name;
+    public String time;
+    public int move;
 
     public ScoreModel(String name, String time, int move) {
         this.name = name;

@@ -61,7 +61,7 @@ public class OptionsActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_options);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         ButterKnife.bind(this);
         Define();
         Initialization();

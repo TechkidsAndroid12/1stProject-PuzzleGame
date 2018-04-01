@@ -125,7 +125,7 @@ public class MainGameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_game);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         ButterKnife.bind(this);
         Define();
         Initialization();

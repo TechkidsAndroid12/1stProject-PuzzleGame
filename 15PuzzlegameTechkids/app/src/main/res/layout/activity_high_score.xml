@@ -1,16 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgroundclouds"
+    android:orientation="vertical"
     tools:context="com.example.mypc.a15puzzlegametechkids.HighScoreActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_arrow_back"
+            android:padding="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Hall of fame"
+            android:textStyle="bold"
+            android:textColor="#046547"
+            android:textSize="24sp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:paddingTop="22dp"/>
+    </RelativeLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@drawable/highscoreboard"
         android:elevation="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,45 +48,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.4" />
+            app:layout_constraintGuide_percent="0.42" />
 
         <TextView
             android:id="@+id/tv_1st"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="2nd ------------------------  \n \n \n"
-            android:textAlignment="viewStart"
+            android:text="1st:   name\n        in 14:30\n        and 30 moves"
             android:textColor="@android:color/white"
-            android:textSize="14sp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="casual"
+            app:layout_constraintBottom_toTopOf="@+id/tv_2nd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_2nd"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="2nd:   name\n        in 14:30\n        and 30 moves"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="casual"
             app:layout_constraintBottom_toTopOf="@+id/gl_20pt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/tv_2rd"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="1st............. \n \n \n"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_1st"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_3nd"
+            android:id="@+id/tv_3rd"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:text="3rd----------  \n \n \n"
-            android:textAlignment="viewStart"
+            android:text="3rd:   name\n        in 14:30\n        and 30 moves"
             android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="casual"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/gl_20pt" />
+            app:layout_constraintTop_toTopOf="@+id/gl_20pt"/>
 
         <TextView
             android:id="@+id/tv_4th"
@@ -70,13 +100,14 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="4th  \n \n \n"
-            android:textAlignment="viewStart"
+            android:text="4th:   name\n        in 14:30\n        and 30 moves"
             android:textColor="@android:color/white"
-            android:textSize="14sp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="casual"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_3nd" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_3rd" />
 
         <TextView
             android:id="@+id/tv_5th"
@@ -85,12 +116,15 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="5th  \n \n \n"
-            android:textAlignment="viewStart"
+            android:text="5th:   name\n        in 14:30\n        and 30 moves"
             android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="casual"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_4th" />
 
     </android.support.constraint.ConstraintLayout>
-</android.support.constraint.ConstraintLayout>
+
+</LinearLayout>
