@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mypc.a15puzzlegametechkids.Database.DataManager;
+
 import java.util.Random;
 
 import butterknife.BindView;
@@ -99,8 +101,11 @@ public class MainGameActivity extends AppCompatActivity {
         Initialization();
         setupUI();
 
-
-
+        DataManager dataManager = new DataManager(this);
+        dataManager.NewScore("xx", "3:05", 2);
+        dataManager.NewScore("xx", "1:00", 10);
+        dataManager.NewScore("xx", "5:05", 6);
+        Log.d(TAG, "onCreate: " + dataManager.getAllItems());
     }
 
     @OnClick({R.id.iv_back, R.id.tv_current_moving, R.id.tv_best_moving, R.id.cl_main_board, R.id.iv_continue, R.id.iv_newgame, R.id.iv_solve, R.id.iv_quit, R.id.cl_menu_box, R.id.iv_menu, R.id.cl_score_board, R.id.v_cancel_dielog, R.id.v_no_dielog, R.id.v_yes_dielog})
@@ -141,8 +146,8 @@ public class MainGameActivity extends AppCompatActivity {
             case R.id.iv_solve:
                 int[][] newTable = getNewTable(puzzle);
                 final String solution = SolvingPuzzle.solving(puzzle);
+                Log.d(TAG, "onViewClicked: " + solution);
                 String direct = "RULD";
-
 
                 CountDownTimer countDownTimer = new CountDownTimer(solution.length()*250, 250) {
                     @Override

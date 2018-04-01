@@ -56,17 +56,40 @@ class state {
     public int hashCode() {
         return Arrays.deepHashCode(table);
     }
+
+    @Override
+    public String toString() {
+        return "state{" +
+                "table=" + Arrays.toString(table) +
+                '}';
+    }
 }
 
 public class SolvingPuzzle {
 
-    static Comparator<state> comparator = new StateComparator();
-    static PriorityQueue<state> heap = new PriorityQueue<state>(1000000, comparator);
+    static Heap heap = new Heap(1000000);
 
     private static Set<state> visited = new HashSet<state>();
     private static final String TAG = "SolvingPuzzle";
     public static String solving(int[][] table) {
+<<<<<<< HEAD
         int[][] tableTemp = new int[6][6];
+=======
+       /*
+        table[0][0] = 6; table[0][1] = 1; table[0][2] = 3; table[0][3] = 2;
+        table[1][0] = 9; table[1][1] = 0; table[1][2] = 5; table[1][3] = 4;
+        table[2][0] = 11; table[2][1] = 15; table[2][2] = 8; table[2][3] = 12;
+        table[3][0] = 10; table[3][1] = 13; table[3][2] = 14; table[3][3] = 7;
+        */
+        ////////////
+        String ss = "";
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 4; j++)
+                ss += table[i][j] + " ";
+        Log.d(TAG, "solving: " + ss);
+        /////////////
+        int[][] tableTemp = new int[4][4];
+>>>>>>> 2a696c603e21ae47302fe1b998c18989891de8fe
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
                 tableTemp[i][j] = table[i][j];
@@ -84,8 +107,7 @@ public class SolvingPuzzle {
 
             neighbor(node);
 
-            if (StateComparator.HeuristicCost(node) == 0) break;
-            //break;
+            if (Heap.HeuristicCost(node) == 0) break;
         }
 
         //empty data
@@ -113,8 +135,8 @@ public class SolvingPuzzle {
                 }
                 result += node.lastMove.charAt(i);
             }
-        } while (!result.equals(node.lastMove));
 
+        } while (!result.equals(node.lastMove));
         Log.d(TAG, "solving: " + result);
         return result;
     }
@@ -136,7 +158,13 @@ public class SolvingPuzzle {
             temp.table[temp.pos0.X][temp.pos0.Y] = pivot;
             temp.cost++;
 
-            if (!visited.contains(temp.table)) {
+            String ss = "";
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
+                    ss += temp.table[i][j] + " ";
+            //Log.d(TAG, "solving: " + ss + temp.cost + " " + Heap.HeuristicCost(temp) + " " + visited.contains(temp));
+
+            if (!visited.contains(temp)) {
                 heap.add(temp);
                 visited.add(temp);
             }
@@ -155,7 +183,7 @@ public class SolvingPuzzle {
             temp.table[temp.pos0.X][temp.pos0.Y] = pivot;
             temp.cost++;
 
-            if (!visited.contains(temp.table)) {
+            if (!visited.contains(temp)) {
                 heap.add(temp);
                 visited.add(temp);
             }
@@ -174,7 +202,7 @@ public class SolvingPuzzle {
             temp.table[temp.pos0.X][temp.pos0.Y] = pivot;
             temp.cost++;
 
-            if (!visited.contains(temp.table)) {
+            if (!visited.contains(temp)) {
                 heap.add(temp);
                 visited.add(temp);
             }
@@ -193,7 +221,7 @@ public class SolvingPuzzle {
             temp.table[temp.pos0.X][temp.pos0.Y] = pivot;
             temp.cost++;
 
-            if (!visited.contains(temp.table)) {
+            if (!visited.contains(temp)) {
                 heap.add(temp);
                 visited.add(temp);
             }
@@ -509,11 +537,60 @@ public class SolvingPuzzle {
 
 }
 
-class StateComparator implements Comparator<state> {
-    @Override
-    public int compare(state o1, state o2) {
-        if (o1.cost + HeuristicCost(o1) >= o2.cost + HeuristicCost(o2)) return 1;
-        else return 0;
+class Heap {
+    state[] listState;
+    int size;
+    int maxSize;
+
+    public Heap(int maxSize) {
+        this.maxSize = maxSize;
+        listState = new state[maxSize];
+        size = 0;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public void clear() {
+        listState = new state[maxSize];
+        size = 0;
+    }
+
+    public void upheap(int pos) {
+        int parent = pos / 2;
+        if (parent == 0) return;
+        if (HeuristicCost(listState[parent]) <= HeuristicCost(listState[pos])) return;
+        state temp = listState[parent];
+        listState[parent] = listState[pos];
+        listState[pos] = temp;
+        upheap(parent);
+    }
+
+    public void downheap(int pos) {
+        int children = pos*2;
+        if (children > size) return;
+        if (children < size && HeuristicCost(listState[children+1]) <= HeuristicCost(listState[children]))
+            children++;
+        if (HeuristicCost(listState[pos]) <= HeuristicCost(listState[children])) return;
+        state temp = listState[pos];
+        listState[pos] = listState[children];
+        listState[children] = temp;
+        downheap(children);
+    }
+
+    public void add(state node) {
+        size++;
+        listState[size] = node;
+        upheap(size);
+    }
+
+    public state poll() {
+        state res = listState[1];
+        listState[1] = listState[size];
+        size--;
+        downheap(1);
+        return res;
     }
 
 
