@@ -11,8 +11,8 @@
         android:id="@+id/cl_title_bar"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:elevation="15dp"
         android:background="@drawable/titlebar"
+        android:elevation="15dp"
         app:layout_constraintBottom_toTopOf="@+id/gl_10_percent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,9 +75,9 @@
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
+        android:background="@drawable/darkerbackground"
         android:elevation="50dp"
         android:visibility="gone"
-        android:background="@drawable/darkerbackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -141,11 +141,64 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_dielog__forget"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/darkerbackground"
+        android:elevation="50dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_dielog_main_forget"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+
+
+            android:background="@drawable/dielogforget"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:id="@+id/v_cancel_dielog_forget"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/iv_dielog_image_forget"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/border2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/imagezero" />
+
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_score_board"
         android:layout_width="300dp"
         android:layout_height="100dp"
-        android:elevation="15dp"
         android:background="@drawable/highscoreboardinblue"
+        android:elevation="15dp"
         app:layout_constraintBottom_toTopOf="@+id/cl_main_board"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -494,7 +547,7 @@
             <ImageView
                 android:id="@+id/iv_continue"
                 android:layout_width="200dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_marginBottom="4dp"
                 app:layout_constraintBottom_toTopOf="@+id/iv_newgame"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -504,7 +557,7 @@
             <ImageView
                 android:id="@+id/iv_newgame"
                 android:layout_width="200dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_marginBottom="4dp"
                 app:layout_constraintBottom_toTopOf="@+id/gl_50_percent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -514,7 +567,7 @@
             <ImageView
                 android:id="@+id/iv_solve"
                 android:layout_width="200dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -524,11 +577,11 @@
             <ImageView
                 android:id="@+id/iv_quit"
                 android:layout_width="200dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_solve"
+                app:layout_constraintTop_toBottomOf="@+id/iv_custom"
                 app:srcCompat="@drawable/btnquit" />
 
             <android.support.constraint.Guideline
@@ -536,7 +589,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.5" />
+                app:layout_constraintGuide_percent="0.4" />
+
+            <ImageView
+                android:id="@+id/iv_custom"
+                android:layout_width="200dp"
+                android:layout_height="45dp"
+
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_solve"
+                app:srcCompat="@drawable/customgamebtn" />
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 

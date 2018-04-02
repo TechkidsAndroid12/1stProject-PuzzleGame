@@ -66,8 +66,9 @@ public class MainGameActivity extends AppCompatActivity {
     TextView tvBestResult;
     @BindView(R.id.tv_best_timer)
     TextView tvBestTimer;
-    ConstraintLayout clDielogReset;
-    View vCancelDielog, vYesDielog, vNoDielog;
+    ConstraintLayout clDielogReset, clDielogForget;
+    View vCancelDielog, vYesDielog, vNoDielog, vCancelDielogForget;
+    ImageView ivImageForget, ivCustom;
 
     Sound sound = new Sound(this);
 
@@ -91,6 +92,7 @@ public class MainGameActivity extends AppCompatActivity {
     private final int WIDTH = 4, HEIGHT = 4;
     private int numberMoving = 0;
     private int positionMainImage = 1;
+    private int[] idForgetImages = {R.drawable.imagezero, R.drawable.imageone, R.drawable.imagetwo, R.drawable.imagethree, R.drawable.tnhfour, R.drawable.tnhone, R.drawable.tnhtwo, R.drawable.imageone, R.drawable.tnhone, R.drawable.tnhtwo, 0};
     private int[][][] idIvPuzzles = {
             {
                     {R.drawable.aa, R.drawable.ab, R.drawable.ac, R.drawable.ad},
@@ -133,13 +135,14 @@ public class MainGameActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Define();
         Initialization();
+
         setupUI();
 
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @OnClick({R.id.iv_back, R.id.tv_current_moving, R.id.tv_best_moving, R.id.cl_main_board, R.id.iv_continue, R.id.iv_newgame, R.id.iv_solve, R.id.iv_quit, R.id.cl_menu_box, R.id.iv_menu, R.id.cl_score_board, R.id.v_cancel_dielog, R.id.v_no_dielog, R.id.v_yes_dielog, R.id.v_forget, R.id.v_reset})
+    @OnClick({R.id.iv_back, R.id.tv_current_moving, R.id.tv_best_moving, R.id.cl_main_board, R.id.iv_continue, R.id.iv_newgame, R.id.iv_solve, R.id.iv_quit, R.id.cl_menu_box, R.id.iv_menu, R.id.cl_score_board, R.id.v_cancel_dielog, R.id.v_no_dielog, R.id.v_yes_dielog, R.id.v_forget, R.id.v_reset, R.id.v_cancel_dielog_forget, R.id.iv_custom})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -230,14 +233,40 @@ public class MainGameActivity extends AppCompatActivity {
 
             case R.id.v_forget:
                 if (turnOnSound) sound.playSound(R.raw.snapping);
-
+                clDielogForget.setVisibility(View.VISIBLE);
+                ivImageForget.setImageResource(idForgetImages[positionMainImage]);
+                if (firstMoving) timer.Pause();
+                onTouchable = false;
                 break;
+
+            case R.id.v_cancel_dielog_forget:
+                if (turnOnSound) sound.playSound(R.raw.snapping);
+                clDielogForget.setVisibility(View.GONE);
+                onTouchable = true;
+                break;
+            case R.id.iv_custom:
+                isChangling = false;
+                if (turnOnSound) sound.playSound(R.raw.snapping);
+                numberMoving = 0;
+                tvCurrentMoving.setText("0");
+                if (firstMoving) timer.Stop();
+
+                onTouchable = true;
+                clMenuBox.setVisibility(View.GONE);
+
+                Initialization();
+                break;
+
+
 
 
         }
     }
 
     private void Define() {
+        ivImageForget = findViewById(R.id.iv_dielog_image_forget);
+        clDielogForget = findViewById(R.id.cl_dielog__forget);
+        vCancelDielogForget = findViewById(R.id.v_cancel_dielog_forget);
         chronometer = findViewById(R.id.cr_chromometer);
         clDielogReset = findViewById(R.id.cl_dielog__reset);
         vCancelDielog = findViewById(R.id.v_cancel_dielog);
@@ -290,6 +319,7 @@ public class MainGameActivity extends AppCompatActivity {
         }
         ivPuzzle[HEIGHT - 1][WIDTH - 1].setImageDrawable(null);
         ivPuzzle[HEIGHT - 1][WIDTH - 1].setBackground(null);
+
 
 
     }
@@ -374,6 +404,7 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     private void getRandomMap() {
+        isChangling = true;
         int countTimes = 0;
         Random random = new Random();
         while (countTimes < RANDOM_TIMES) {
@@ -401,6 +432,8 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     private void setupUI() {
+        getRandomMap();
+        ivImageForget.setImageResource(idForgetImages[positionMainImage]);
         gestureDetector = new GestureDetector(this, new myGestureDetector());
 
         if (onTouchable) clMainBoard.setOnTouchListener(new View.OnTouchListener() {
