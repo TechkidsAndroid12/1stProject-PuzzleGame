@@ -167,6 +167,7 @@ public class MainGameActivity extends AppCompatActivity {
                 break;
             case R.id.iv_newgame:
                 isChangling = true;
+                chronometer.setTextColor(Color.WHITE);
                 if (turnOnSound) sound.playSound(R.raw.snapping);
                 numberMoving = 0;
                 tvCurrentMoving.setText("0");
@@ -180,6 +181,7 @@ public class MainGameActivity extends AppCompatActivity {
                 break;
             case R.id.iv_solve:
                 isChangling = false;
+                chronometer.setTextColor(Color.YELLOW);
                 if (turnOnSound) sound.playSound(R.raw.snapping);
                 turnOnSound = false;
                 onTouchable = false;
@@ -249,6 +251,7 @@ public class MainGameActivity extends AppCompatActivity {
                 break;
             case R.id.iv_custom:
                 isChangling = false;
+                chronometer.setTextColor(Color.YELLOW);
                 if (turnOnSound) sound.playSound(R.raw.snapping);
                 numberMoving = 0;
                 tvCurrentMoving.setText("0");
@@ -302,6 +305,7 @@ public class MainGameActivity extends AppCompatActivity {
         isChangling = false;
         turnOnSound = true;
         onTouchable = true;
+        chronometer.setTextColor(Color.WHITE);
         positionMainImage = getIntent().getIntExtra("PositionOfMainImage", positionMainImage);
         firstMoving = false;
 
@@ -408,6 +412,7 @@ public class MainGameActivity extends AppCompatActivity {
 
     private void getRandomMap() {
         isChangling = true;
+        chronometer.setTextColor(Color.WHITE);
         int countTimes = 0;
         Random random = new Random();
         while (countTimes < RANDOM_TIMES) {
@@ -490,10 +495,10 @@ public class MainGameActivity extends AppCompatActivity {
         tvCurrentMoving.setText(String.valueOf(++numberMoving));
         if(!isChangling){
             tvCurrentMoving.setTextColor(Color.YELLOW);
-            chronometer.setTextColor(Color.YELLOW);
+
         }else{
             tvCurrentMoving.setTextColor(Color.WHITE);
-            chronometer.setTextColor(Color.WHITE);
+
         }
         boolean isWin = autoCheckCorrect(puzzle);
         if (isWin) {
