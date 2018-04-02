@@ -13,7 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.mypc.a15puzzlegametechkids.R;
-import com.example.mypc.a15puzzlegametechkids.Models.Sound;
+import com.example.mypc.a15puzzlegametechkids.Models.SoundModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +47,7 @@ public class OptionsActivity extends AppCompatActivity {
     ConstraintLayout clMainView;
 
 
-    Sound sound = new Sound(this);
+    SoundModel soundModel = new SoundModel(this);
 
     private int[] idPreview = {R.drawable.imagezero, R.drawable.imageone, R.drawable.imagetwo, R.drawable.imagethree, R.drawable.tnhfour, R.drawable.tnhone, R.drawable.tnhtwo, R.drawable.imageone, R.drawable.tnhone, R.drawable.tnhtwo, 0};
     private int currentPosition = 1;
@@ -88,11 +88,11 @@ public class OptionsActivity extends AppCompatActivity {
 
                 break;
             case R.id.iv_back:
-                sound.playSound(R.raw.snapping);
+                soundModel.playSound(R.raw.snapping);
                 onBackPressed();
                 break;
             case R.id.iv_check:
-                sound.playSound(R.raw.snapping);
+                soundModel.playSound(R.raw.snapping);
                 Intent intentSave = new Intent(OptionsActivity.this, MainGameActivity.class);
                 intentSave.putExtra("PositionOfMainImage", currentPosition);
                 startActivity(intentSave);
@@ -147,7 +147,7 @@ public class OptionsActivity extends AppCompatActivity {
 
     private boolean changePicture(final int dir) {
         if(!onTouchable[0] || !onTouchable[1] || !onTouchable[2]) return false;
-        sound.playSound(R.raw.snapping);
+        soundModel.playSound(R.raw.snapping);
 
         //  clPreviewPicture.setVisibility(View.VISIBLE);
         currentPosition = (dir + currentPosition + NUM_PREVIEWS) % NUM_PREVIEWS;

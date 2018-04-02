@@ -7,7 +7,7 @@ import android.widget.Chronometer;
  * Created by MyPC on 27/03/2018.
  */
 
-public class Timer {
+public class TimeModel {
     public Chronometer chronometer;
     public long timeWhenStopped;
     public boolean started;
@@ -15,7 +15,7 @@ public class Timer {
 
 
 
-    public Timer(Chronometer chronometer, long timeWhenStopped) {
+    public TimeModel(Chronometer chronometer, long timeWhenStopped) {
         this.chronometer = chronometer;
         this.timeWhenStopped = timeWhenStopped;
         started = false;

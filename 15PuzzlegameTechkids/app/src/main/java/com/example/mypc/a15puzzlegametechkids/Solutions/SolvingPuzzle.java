@@ -1,4 +1,4 @@
-package com.example.mypc.a15puzzlegametechkids.Models;
+package com.example.mypc.a15puzzlegametechkids.Solutions;
 
 import android.util.Log;
 

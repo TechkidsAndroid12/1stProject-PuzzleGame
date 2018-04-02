@@ -1,4 +1,4 @@
-package com.example.mypc.a15puzzlegametechkids.Database;
+package com.example.mypc.a15puzzlegametechkids.Databases;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

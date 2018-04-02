@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" ?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -188,6 +188,70 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/imagezero" />
+
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_dielog__savename"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+
+        android:background="@drawable/darkerbackground"
+        android:elevation="50dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_dielog_main_savename"
+            android:layout_width="320dp"
+            android:layout_height="160dp"
+            android:background="@drawable/dielogsavename"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:id="@+id/v_cancel_dielog_savename"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/v_ok_dielog_savename"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <EditText
+                android:id="@+id/et_get_namw"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:textColor="#231212"
+                android:fontFamily="casual"
+                android:imeOptions="actionDone"
+                android:textStyle="bold"
+                android:hint="max 25 characters"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/v_ok_dielog_savename"
+                app:layout_constraintEnd_toStartOf="@+id/v_cancel_dielog_savename"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </android.support.constraint.ConstraintLayout>

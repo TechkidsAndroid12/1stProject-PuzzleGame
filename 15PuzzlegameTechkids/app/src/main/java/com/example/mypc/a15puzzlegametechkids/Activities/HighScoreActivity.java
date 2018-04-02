@@ -2,17 +2,20 @@ package com.example.mypc.a15puzzlegametechkids.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.mypc.a15puzzlegametechkids.Database.DataManager;
-import com.example.mypc.a15puzzlegametechkids.Database.ScoreModel;
+import com.example.mypc.a15puzzlegametechkids.Databases.DataManager;
+import com.example.mypc.a15puzzlegametechkids.Models.ScoreModel;
+import com.example.mypc.a15puzzlegametechkids.Models.SoundModel;
 import com.example.mypc.a15puzzlegametechkids.R;
 
 import java.util.List;
 
 public class HighScoreActivity extends AppCompatActivity {
+    private static final String TAG = "HighScoreActivity";
 
     String[] position = new String[]{"1st", "2nd", "3rd", "4th", "5th"};
 
@@ -47,11 +50,11 @@ public class HighScoreActivity extends AppCompatActivity {
         //dataManager.NewScore("xx", "5:05", 6);
         List<ScoreModel> scoreModelList = dataManager.getAllItems();
 
-        for (int i = 0; i < scoreModelList.size(); i++)
-            textViews[i].setText(position[i] + ":   "
-                    + scoreModelList.get(i).name + "\n        in "
-                    + scoreModelList.get(i).time + "\n        and "
-                    + scoreModelList.get(i).move + " moves");
+        for (int i = 0; i < scoreModelList.size(); i++){
+            textViews[i].setText(position[i] + ":" + scoreModelList.get(i).toString());
+            Log.d(TAG, "onCreate: " + position[i] + ":" + scoreModelList.get(i).toString());
+        }
+
 
     }
 }

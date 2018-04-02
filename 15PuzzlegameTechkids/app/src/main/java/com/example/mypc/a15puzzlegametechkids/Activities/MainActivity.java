@@ -12,7 +12,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.mypc.a15puzzlegametechkids.R;
-import com.example.mypc.a15puzzlegametechkids.Models.Sound;
+import com.example.mypc.a15puzzlegametechkids.Models.SoundModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.cl_menu_main)
     ConstraintLayout clMenuMain;
 
-    Sound sound = new Sound(this);
+    SoundModel soundModel = new SoundModel(this);
 
     int positionMainImage = 0;
 
@@ -55,23 +55,23 @@ public class MainActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_playgame:
-                sound.playSound(R.raw.snapping);
+                soundModel.playSound(R.raw.snapping);
                 Intent playgameIntent = new Intent(MainActivity.this, MainGameActivity.class);
                 playgameIntent.putExtra("PositionOfMainImage", 1);
                 startActivity(playgameIntent);
                 break;
             case R.id.iv_options:
-                sound.playSound(R.raw.snapping);
+                soundModel.playSound(R.raw.snapping);
                 Intent optionsIntent = new Intent(MainActivity.this, OptionsActivity.class);
                 startActivity(optionsIntent);
                 break;
             case R.id.iv_highscores:
-                sound.playSound(R.raw.snapping);
+                soundModel.playSound(R.raw.snapping);
                 Intent scoresIntent = new Intent(MainActivity.this, HighScoreActivity.class);
                 startActivity(scoresIntent);
                 break;
             case R.id.iv_introduction:
-                sound.playSound(R.raw.snapping);
+                soundModel.playSound(R.raw.snapping);
                 Intent introductionIntent = new Intent(MainActivity.this, IntroductionActivity.class);
                 startActivity(introductionIntent);
 

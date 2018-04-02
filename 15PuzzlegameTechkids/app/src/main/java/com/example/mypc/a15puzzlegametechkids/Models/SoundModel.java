@@ -7,7 +7,7 @@ import android.media.MediaPlayer;
  * Created by MyPC on 01/04/2018.
  */
 
-public class Sound {
+public class SoundModel {
 
 
     private MediaPlayer SystemSound;
@@ -15,7 +15,7 @@ public class Sound {
     private Context context;
 
 
-    public Sound(Context context) {
+    public SoundModel(Context context) {
         this.context = context;
 
     }
@@ -63,6 +63,11 @@ public class Sound {
         BackgroundSound = MediaPlayer.create(context, ID_OF_SOUND);
 
     }
+
+
+    /**
+     * Created by bùm on 3/30/2018.
+     */
 
 
 }
