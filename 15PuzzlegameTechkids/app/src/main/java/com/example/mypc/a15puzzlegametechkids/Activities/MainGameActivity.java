@@ -1,5 +1,6 @@
 package com.example.mypc.a15puzzlegametechkids.Activities;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -165,6 +166,7 @@ public class MainGameActivity extends AppCompatActivity {
                 onTouchable = true;
                 break;
             case R.id.iv_newgame:
+                isChangling = true;
                 if (turnOnSound) sound.playSound(R.raw.snapping);
                 numberMoving = 0;
                 tvCurrentMoving.setText("0");
@@ -177,6 +179,7 @@ public class MainGameActivity extends AppCompatActivity {
                 getRandomMap();
                 break;
             case R.id.iv_solve:
+                isChangling = false;
                 if (turnOnSound) sound.playSound(R.raw.snapping);
                 turnOnSound = false;
                 onTouchable = false;
@@ -464,6 +467,7 @@ public class MainGameActivity extends AppCompatActivity {
 
         if (!firstMoving) {
             firstMoving = true;
+
             timer.Reset();
 
         }
@@ -484,6 +488,13 @@ public class MainGameActivity extends AppCompatActivity {
         emptyPuzzle = new SpecialPuzzle(oldX, oldY, 0, true);
 
         tvCurrentMoving.setText(String.valueOf(++numberMoving));
+        if(!isChangling){
+            tvCurrentMoving.setTextColor(Color.YELLOW);
+            chronometer.setTextColor(Color.YELLOW);
+        }else{
+            tvCurrentMoving.setTextColor(Color.WHITE);
+            chronometer.setTextColor(Color.WHITE);
+        }
         boolean isWin = autoCheckCorrect(puzzle);
         if (isWin) {
             timer.Pause();
