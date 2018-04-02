@@ -1,4 +1,4 @@
-package com.example.mypc.a15puzzlegametechkids;
+package com.example.mypc.a15puzzlegametechkids.Models;
 
 import android.content.Context;
 import android.media.MediaPlayer;

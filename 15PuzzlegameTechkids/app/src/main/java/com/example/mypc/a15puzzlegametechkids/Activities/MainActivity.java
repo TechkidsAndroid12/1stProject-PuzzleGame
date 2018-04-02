@@ -1,17 +1,18 @@
-package com.example.mypc.a15puzzlegametechkids;
+package com.example.mypc.a15puzzlegametechkids.Activities;
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.SupportActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.SupportMenuInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
+import com.example.mypc.a15puzzlegametechkids.R;
+import com.example.mypc.a15puzzlegametechkids.Models.Sound;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,12 +35,7 @@ public class MainActivity extends AppCompatActivity {
     Sound sound = new Sound(this);
 
     int positionMainImage = 0;
-    private int[][] idIvPuzzles = {
-            {R.drawable.aa, R.drawable.ab, R.drawable.ac, R.drawable.ad},
-            {R.drawable.ba, R.drawable.bb, R.drawable.bc, R.drawable.bd},
-            {R.drawable.ca, R.drawable.cb, R.drawable.cc, R.drawable.cd},
-            {R.drawable.da, R.drawable.db, R.drawable.dc, R.drawable.dd}
-    };
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -59,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_playgame:
-                Intent playgameIntent = new Intent(MainActivity.this, MainGameActivity.class);
-                //  playgameIntent.putExtra("PositionMainImage", positionMainImage);
                 sound.playSound(R.raw.snapping);
+                Intent playgameIntent = new Intent(MainActivity.this, MainGameActivity.class);
+                playgameIntent.putExtra("PositionOfMainImage", 1);
                 startActivity(playgameIntent);
                 break;
             case R.id.iv_options:

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgroundvaibotho"
-    tools:context="com.example.mypc.a15puzzlegametechkids.IntroductionActivity">
+    tools:context="com.example.mypc.a15puzzlegametechkids.Activities.IntroductionActivity">
 
     <ImageView
         android:id="@+id/imageView2"

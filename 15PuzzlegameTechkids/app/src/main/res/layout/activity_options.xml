@@ -5,21 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgroundvaibotho"
-    tools:context="com.example.mypc.a15puzzlegametechkids.OptionsActivity">
+    tools:context="com.example.mypc.a15puzzlegametechkids.Activities.OptionsActivity">
 
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_title_bar"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/titlebar"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        android:elevation="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/gl_10percent_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -29,10 +25,11 @@
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
+            android:background="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/btnback" />
+            app:srcCompat="@drawable/backbtn" />
 
         <ImageView
             android:id="@+id/iv_check"
@@ -42,18 +39,28 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/btncheck" />
+            app:srcCompat="@drawable/checkbtn" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/iv_title"
             android:layout_width="150dp"
-            android:layout_height="40dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/optionsactivityy" />
+            app:srcCompat="@drawable/fiftypuzzle" />
+
     </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/gl_10percent_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
@@ -63,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/gl_10percent_horizontal"
         app:layout_constraintVertical_bias="1.0">
 
 

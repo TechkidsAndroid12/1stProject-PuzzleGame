@@ -1,4 +1,4 @@
-package com.example.mypc.a15puzzlegametechkids;
+package com.example.mypc.a15puzzlegametechkids.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.mypc.a15puzzlegametechkids.Database.DataManager;
 import com.example.mypc.a15puzzlegametechkids.Database.ScoreModel;
+import com.example.mypc.a15puzzlegametechkids.R;
 
 import java.util.List;
 

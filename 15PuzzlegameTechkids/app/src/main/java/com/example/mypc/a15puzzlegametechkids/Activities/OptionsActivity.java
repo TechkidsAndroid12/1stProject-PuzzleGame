@@ -1,4 +1,4 @@
-package com.example.mypc.a15puzzlegametechkids;
+package com.example.mypc.a15puzzlegametechkids.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
+import com.example.mypc.a15puzzlegametechkids.R;
+import com.example.mypc.a15puzzlegametechkids.Models.Sound;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +46,7 @@ public class OptionsActivity extends AppCompatActivity {
     @BindView(R.id.cl_main_view)
     ConstraintLayout clMainView;
 
+
     Sound sound = new Sound(this);
 
     private int[] idPreview = {R.drawable.imagezero, R.drawable.imageone, R.drawable.imagetwo, R.drawable.imagethree, R.drawable.tnhfour, R.drawable.tnhone, R.drawable.tnhtwo, R.drawable.imageone, R.drawable.tnhone, R.drawable.tnhtwo, 0};
@@ -70,7 +74,7 @@ public class OptionsActivity extends AppCompatActivity {
 
     }
 
-    @OnClick({ R.id.iv_arrow_left, R.id.iv_arrow_right, R.id.iv_check, R.id.iv_back})
+    @OnClick({ R.id.iv_arrow_left, R.id.iv_arrow_right, R.id.iv_check, R.id.iv_back, R.id.iv_right, R.id.iv_left})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -85,15 +89,19 @@ public class OptionsActivity extends AppCompatActivity {
                 break;
             case R.id.iv_back:
                 sound.playSound(R.raw.snapping);
-                Intent intentBack = new Intent(OptionsActivity.this, MainGameActivity.class);
-                intentBack.putExtra("PositionOfMainImage", 1);
-                startActivity(intentBack);
+                onBackPressed();
                 break;
             case R.id.iv_check:
                 sound.playSound(R.raw.snapping);
                 Intent intentSave = new Intent(OptionsActivity.this, MainGameActivity.class);
                 intentSave.putExtra("PositionOfMainImage", currentPosition);
                 startActivity(intentSave);
+                break;
+            case R.id.iv_right:
+                changePicture(NEXT_TO_RIGHT);
+                break;
+            case R.id.iv_left:
+                changePicture(NEXT_TO_LEFT);
                 break;
 
         }
@@ -151,6 +159,10 @@ public class OptionsActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     private class myGestureDetector implements GestureDetector.OnGestureListener {
         final int RIGHT_QUARTER = 0;

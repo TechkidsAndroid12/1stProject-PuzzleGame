@@ -1,14 +1,9 @@
-package com.example.mypc.a15puzzlegametechkids;
+package com.example.mypc.a15puzzlegametechkids.Models;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.PriorityQueue;
 import java.util.Set;
 
 import static java.lang.Math.abs;

@@ -1,4 +1,4 @@
-package com.example.mypc.a15puzzlegametechkids;
+package com.example.mypc.a15puzzlegametechkids.Activities;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mypc.a15puzzlegametechkids.Database.DataManager;
+import com.example.mypc.a15puzzlegametechkids.R;
+import com.example.mypc.a15puzzlegametechkids.Models.SolvingPuzzle;
+import com.example.mypc.a15puzzlegametechkids.Models.Sound;
+import com.example.mypc.a15puzzlegametechkids.Models.SpecialPuzzle;
+import com.example.mypc.a15puzzlegametechkids.Models.Timer;
 
 import java.util.Random;
 import java.util.Stack;
@@ -79,7 +83,7 @@ public class MainGameActivity extends AppCompatActivity {
     private SpecialPuzzle emptyPuzzle;
     private int[][] puzzle = new int[6][6];
     private boolean onTouchable = false;
-    private boolean turnOnSound = false;
+    private boolean turnOnSound = false, isChangling = false;
     private boolean firstMoving = false;
     private final int[] directX = {0, -1, 0, 1};
     private final int[] directY = {1, 0, -1, 0};
@@ -263,6 +267,7 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     private void Initialization() {
+        isChangling = false;
         turnOnSound = true;
         onTouchable = true;
         positionMainImage = getIntent().getIntExtra("PositionOfMainImage", positionMainImage);
@@ -270,10 +275,10 @@ public class MainGameActivity extends AppCompatActivity {
 
         numberMoving = 0;
         timer = new Timer(chronometer, 0);
-        emptyPuzzle = new SpecialPuzzle(HEIGHT-1, WIDTH-1, 0, true);
+        emptyPuzzle = new SpecialPuzzle(HEIGHT - 1, WIDTH - 1, 0, true);
         for (int line = 0; line < HEIGHT; line++) {
             for (int column = 0; column < WIDTH; column++) {
-                puzzle[line][column] = (line * WIDTH + column + 1)%(HEIGHT*WIDTH);
+                puzzle[line][column] = (line * WIDTH + column + 1) % (HEIGHT * WIDTH);
             }
         }
         puzzle[emptyPuzzle.x][emptyPuzzle.y] = emptyPuzzle.value;
@@ -283,16 +288,16 @@ public class MainGameActivity extends AppCompatActivity {
                 ivPuzzle[line][column].setBackgroundResource(R.drawable.border4);
             }
         }
-        ivPuzzle[HEIGHT-1][WIDTH-1].setImageDrawable(null);
-        ivPuzzle[HEIGHT-1][WIDTH-1].setBackground(null);
+        ivPuzzle[HEIGHT - 1][WIDTH - 1].setImageDrawable(null);
+        ivPuzzle[HEIGHT - 1][WIDTH - 1].setBackground(null);
 
 
     }
 
-    private String getStringTable(int [][] table){
+    private String getStringTable(int[][] table) {
         String string = "";
-        for(int i = 0 ;i < HEIGHT ;i ++){
-            for(int j = 0 ;j < WIDTH ;j ++){
+        for (int i = 0; i < HEIGHT; i++) {
+            for (int j = 0; j < WIDTH; j++) {
                 string += (String.format("%4d", table[i][j]));
             }
             string += "\n";
@@ -313,9 +318,8 @@ public class MainGameActivity extends AppCompatActivity {
         String resultString = SolvingPuzzle.solving(puzzle);
         if (resultString.length() < 1) return false;
         stackResult.clear();
-       // for (int i = 0; i < resultString.length(); i ++)
-        for(int i = resultString.length() - 1 ;i >= 0 ;i --)
-        {
+        // for (int i = 0; i < resultString.length(); i ++)
+        for (int i = resultString.length() - 1; i >= 0; i--) {
             if (resultString.charAt(i) == 'R') stackResult.add(LEFT_TO_RIGHT);
             else if (resultString.charAt(i) == 'U') stackResult.add(DOWN_TO_UP);
             else if (resultString.charAt(i) == 'L') stackResult.add(RIGHT_TO_LEFT);
@@ -356,15 +360,7 @@ public class MainGameActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-                /*
-                boolean isWin = autoCheckCorrect(puzzle);
-                if (isWin) {
-                    timer.Pause();
-                    Toast.makeText(MainGameActivity.this, "Congratulations", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (timer.isPausing) timer.Continue();
-                }
-                */
+
 
                 Toast.makeText(MainGameActivity.this, showSolution, Toast.LENGTH_SHORT).show();
             }
@@ -423,7 +419,8 @@ public class MainGameActivity extends AppCompatActivity {
         int[][] table = new int[6][6];
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < WIDTH; j++) {
-                table[i][j] = (currentTable[i][j] + 1 + HEIGHT * WIDTH) % (HEIGHT * WIDTH);
+                if (table[i][j] > 0 && table[i][j] < HEIGHT * WIDTH)
+                    table[i][j] = (currentTable[i][j] + 1 + HEIGHT * WIDTH) % (HEIGHT * WIDTH);
             }
         }
 
@@ -468,7 +465,7 @@ public class MainGameActivity extends AppCompatActivity {
     private boolean autoCheckCorrect(int[][] puzzles) {
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < WIDTH; j++) {
-                if (puzzles[i][j] != i * WIDTH + j) return false;
+                if (puzzles[i][j] != (i * WIDTH + j + 1 +  WIDTH * HEIGHT) % (HEIGHT*WIDTH)) return false;
             }
         }
 
