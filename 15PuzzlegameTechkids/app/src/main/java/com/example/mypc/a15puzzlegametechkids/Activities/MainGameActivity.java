@@ -189,10 +189,12 @@ public class MainGameActivity extends AppCompatActivity {
                 getRandomMap();
                 break;
             case R.id.iv_solve:
+
                 isChangling = false;
-                timeModel.Continue();
+                if(timeModel.started ) timeModel.Continue();
                 if (turnOnSound) soundModel.playSound(R.raw.snapping);
                 turnOnSound = false;
+
                 onTouchable = false;
                 boolean getSolutionable = getSolution();
                 if (!getSolutionable) {
@@ -275,14 +277,11 @@ public class MainGameActivity extends AppCompatActivity {
             case R.id.v_cancel_dielog_savename:
                 if (turnOnSound) soundModel.playSound(R.raw.snapping);
                 clDielogSaveName.setVisibility(View.GONE);
-                etSaveName.setVisibility(View.GONE);
                 onTouchable = true;
-                saveName("Anonymous");
                 isChangling = false;
                 getBestResult();
                 Intent intentToHighScoreCancel = new Intent(MainGameActivity.this, HighScoreActivity.class);
                 startActivity(intentToHighScoreCancel);
-
 
                 break;
             case R.id.v_ok_dielog_savename:
@@ -349,7 +348,7 @@ public class MainGameActivity extends AppCompatActivity {
         // dataManager.addNewScore("hekl0", "00:01",2);
 
 
-       //  dataManager.deleteAllItem();
+        //  dataManager.deleteAllItem();
         List<ScoreModel> scoreModelList = dataManager.getAllItems();
 
         if (!scoreModelList.isEmpty()) {
@@ -458,7 +457,7 @@ public class MainGameActivity extends AppCompatActivity {
                 });
 
 
-                Toast.makeText(MainGameActivity.this, showSolution, Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(MainGameActivity.this, showSolution, Toast.LENGTH_SHORT).show();
             }
         }.start();
 
@@ -568,8 +567,8 @@ public class MainGameActivity extends AppCompatActivity {
                 if (firstMoving) timeModel.Pause();
                 onTouchable = false;
             }
-        } else {
-            if (timeModel.isPausing) timeModel.Continue();
+        }else{
+            if(timeModel.isPausing) timeModel.Continue();
         }
 
         return true;
