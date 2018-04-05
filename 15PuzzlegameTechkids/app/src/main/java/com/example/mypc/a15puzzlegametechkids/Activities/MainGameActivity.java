@@ -1,6 +1,7 @@
 package com.example.mypc.a15puzzlegametechkids.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -278,6 +279,9 @@ public class MainGameActivity extends AppCompatActivity {
                 onTouchable = true;
                 saveName("Anonymous");
                 isChangling = false;
+                getBestResult();
+                Intent intentToHighScoreCancel = new Intent(MainGameActivity.this, HighScoreActivity.class);
+                startActivity(intentToHighScoreCancel);
 
 
                 break;
@@ -292,6 +296,9 @@ public class MainGameActivity extends AppCompatActivity {
                 onTouchable = true;
                 saveName(name);
                 isChangling = false;
+                getBestResult();
+                Intent intentToHighScore = new Intent(MainGameActivity.this, HighScoreActivity.class);
+                startActivity(intentToHighScore);
                 break;
 
 
@@ -334,23 +341,27 @@ public class MainGameActivity extends AppCompatActivity {
 
     }
 
-    private void Initialization() {
+    private void getBestResult() {
         DataManager dataManager = new DataManager(this);
-      //  dataManager.deleteAllItem();
+        //dataManager.deleteAllItem();
 
-      //   dataManager.addNewScore("tr4n","00:01",1);
-       // dataManager.addNewScore("hekl0", "00:01",2);
+        //   dataManager.addNewScore("tr4n","00:01",1);
+        // dataManager.addNewScore("hekl0", "00:01",2);
 
 
-       // dataManager.deleteAllItem();
+       //  dataManager.deleteAllItem();
         List<ScoreModel> scoreModelList = dataManager.getAllItems();
-        ScoreModel maxScore = dataManager.getMaxScore();
-        if (maxScore != null) {
-            tvBestTimer.setText(maxScore.time);
-            tvBestMoving.setText(maxScore.move + "");
+
+        if (!scoreModelList.isEmpty()) {
+            tvBestTimer.setText(scoreModelList.get(0).time);
+            tvBestMoving.setText(scoreModelList.get(0).move + "");
         }
 
 
+    }
+
+    private void Initialization() {
+        getBestResult();
         isChangling = false;
         turnOnSound = true;
         onTouchable = true;
@@ -419,7 +430,7 @@ public class MainGameActivity extends AppCompatActivity {
 
 
         turnOnSound = false;
-        CountDownTimer countDownTimer = new CountDownTimer((stackResult.size() + 1) * 200, 200) {
+        CountDownTimer countDownTimer = new CountDownTimer((stackResult.size() + 1) * 250, 200) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (!stackResult.isEmpty()) {
